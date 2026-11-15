@@ -25,6 +25,9 @@ const publicFiles = [
   'maru-ghar-submit-toggle.js',
   'maru-ghar-file-mode.js',
   'maru-ghar-discovery-upgrades.js',
+  'maru-ghar-24-upgrades.js',
+  'maru-ghar-public-content.js',
+  'maru-ghar-admin-content.js',
   'maru-ghar-qr.js',
   'maru-ghar-i18n.js',
   'maru-ghar-i18n-complete.js'
