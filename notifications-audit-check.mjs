@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 const fn=fs.readFileSync('functions/index.js','utf8');
 const rules=fs.readFileSync('firestore.rules','utf8');
-const extras=fs.readFileSync('assets/maru-ghar-extras.js','utf8');
+const extras=fs.readFileSync('maru-ghar-extras.js','utf8');
 const admin=fs.readFileSync('admin.html','utf8');
 const errors=[];
 if(!fn.includes("require('crypto')"))errors.push('Cloud Function must import crypto for deterministic notification IDs');
