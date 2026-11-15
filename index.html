@@ -392,12 +392,12 @@ header{padding-top:26px!important;padding-bottom:48px!important}
 @media (max-width:620px){.mg-emi .g,.mg-emi .out{grid-template-columns:1fr}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" href="assets/maru-ghar-logo-3d-512.png">
-<link rel="apple-touch-icon" href="assets/maru-ghar-logo-3d-512.png">
+<link rel="icon" type="image/png" href="./maru-ghar-logo-3d-512.png">
+<link rel="apple-touch-icon" href="./maru-ghar-logo-3d-512.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Maru Ghar — મારું ઘર">
 <meta property="og:description" content="Ghar, flat, dukan, plot, office ane PG — Gujarat ma saral shodh.">
-<meta property="og:image" content="assets/maru-ghar-logo-3d-512.png">
+<meta property="og:image" content="./maru-ghar-logo-3d-512.png">
 
 <style id="mg-property-search-luxury-20261112">
 /* Property search page — calm porcelain, jade and muted Chinese-blue accents */
@@ -584,17 +584,17 @@ function filterProps(){
   sw.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;set(b.dataset.cols);try{localStorage.setItem('mg_cols',b.dataset.cols)}catch(_){}});
 })();
 </script>
-<script type="module" src="assets/maru-ghar-backend.js"></script>
-<script type="module" src="assets/maru-ghar-extras.js"></script>
+<script type="module" src="./maru-ghar-backend.js"></script>
+<script type="module" src="./maru-ghar-extras.js"></script>
 
 
 <script>
 (()=>{const root=document.getElementById('mgShowcase');if(!root)return;const slides=[...root.querySelectorAll('.mg-showcase-slide')],dots=[...document.querySelectorAll('#mgShowcaseDots button')],title=document.getElementById('mgShowcaseTitle'),sub=document.getElementById('mgShowcaseSub');let index=0,timer=null;const tr=window.mgTranslate||((x)=>x);function show(n){index=(n+slides.length)%slides.length;slides.forEach((el,i)=>el.classList.toggle('active',i===index));dots.forEach((el,i)=>el.classList.toggle('active',i===index));title.textContent=tr(slides[index].dataset.title);sub.textContent=tr(slides[index].dataset.sub)}function restart(){if(timer)clearInterval(timer);timer=setInterval(()=>show(index+1),5000)}document.getElementById('mgShowcasePrev').addEventListener('click',()=>{show(index-1);restart()});document.getElementById('mgShowcaseNext').addEventListener('click',()=>{show(index+1);restart()});dots.forEach((d,i)=>d.addEventListener('click',()=>{show(i);restart()}));root.addEventListener('mouseenter',()=>timer&&clearInterval(timer));root.addEventListener('mouseleave',restart);document.addEventListener('visibilitychange',()=>document.hidden?clearInterval(timer):restart());window.addEventListener('mg-language-changed',()=>show(index));show(0);restart()})();
 </script>
-<script src="assets/maru-ghar-form-steps.js"></script>
-<script defer src="assets/maru-ghar-polish.js?v=20261114"></script>
-<script defer src="assets/maru-ghar-delight.js?v=20261114"></script>
-<script src="assets/maru-ghar-submit-toggle.js?v=20261102r3"></script>
+<script src="./maru-ghar-form-steps.js"></script>
+<script defer src="./maru-ghar-polish.js?v=20261114"></script>
+<script defer src="./maru-ghar-delight.js?v=20261114"></script>
+<script src="./maru-ghar-submit-toggle.js?v=20261102r3"></script>
 
 <!-- MG_I18N_INLINE_BUNDLE_START: standalone index.html / Chrome file:// support -->
 <script data-mg-i18n-inline="central">
@@ -2464,7 +2464,7 @@ window.MG_I18N_DICTIONARY={
 </script>
 <!-- MG_I18N_INLINE_BUNDLE_END -->
 <script>if(location.protocol==='file:'||location.protocol==='content:'||String(location.href||'').toLowerCase().startsWith('content:')){const n=document.getElementById('mgLocalFileWarning');if(n){n.hidden=false;n.textContent='આ ફાઇલ File Managerમાંથી સીધી ખોલેલી છે. Firebase Login, એકાઉન્ટ, લાઇવ ડેટા, ફોટો/વિડિયો અપલોડ અને Sync માટે HTTPS વેબસાઇટ જરૂરી છે. APKનું કામ બધા ટેસ્ટ પૂર્ણ થયા પછી થશે.';}}</script>
-<script src="assets/maru-ghar-file-mode.js?v=20261102r6"></script>
+<script src="./maru-ghar-file-mode.js?v=20261102r6"></script>
 
 <script id="mg-login-settings-relocation">
 (function(){
@@ -2568,5 +2568,5 @@ window.MG_I18N_DICTIONARY={
 }
 :where(button,input[type="button"],input[type="submit"],input[type="reset"],a[role="button"],.btn,.outline,.wa-btn,.contact-wa,.mg-head-action,.mg-chip,.mg-mapbtn,.mg-compare-shortcut,.mg-contact-trigger,.mg-contact-main,.mg-mobile-nav a,.mg-settings-grid button,.admin-shortcuts a,.admin-shortcuts button,.admin-quick a,.admin-quick button,.backup-actions button,.login-submit,.mg-submit-toggle,.mg-tools button,.cats .cat,.searchbox button,.morefilters button,.property-foot a,.property-foot button,.admin-settings>summary,.primary,.approve,.reject):focus-visible{outline:3px solid rgba(218,180,83,.7)!important;outline-offset:3px!important}
 </style>
-<script defer src="assets/maru-ghar-discovery-upgrades.js?v=20261115"></script>
+<script defer src="./maru-ghar-discovery-upgrades.js?v=20261115"></script>
 </body></html>
