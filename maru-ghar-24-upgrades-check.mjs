@@ -15,7 +15,7 @@ const checks=[
  ['customer name and mobile profile fields',upgrade.includes('customerDisplayName')&&upgrade.includes('customerMobile')&&extras.includes('displayName:name')&&extras.includes('phone:phone')],
  ['private customer profile Firestore rule',rules.includes('CUSTOMER PRIVATE PROFILE')&&rules.includes('request.auth.uid == uid')],
  ['footer QR generation and recent contact CTA',upgrade.includes('qrcode-generator')&&upgrade.includes('સંપર્ક નંબર જુઓ')],
- ['family house illustration',upgrade.includes('mg24-admin-illustration')],
+ ['family house illustration on admin login',adminContent.includes('mg24-admin-illustration')&&adminContent.includes('પરિવાર નવા ઘરને જોઈ રહ્યો છે')],
  ['admin news and social fields',adminContent.includes('mgNewsTitle')&&adminContent.includes('mgFacebook')&&adminContent.includes('mgYoutube')],
  ['public Firestore content listener',publicContent.includes("settings','publicContent")],
  ['Firestore allows validated metadata',rules.includes("'areaSqm', 'saleType', 'listedBy', 'possession'")&&rules.includes("data.saleType in ['new', 'resale']")],
