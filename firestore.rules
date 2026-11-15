@@ -35,7 +35,7 @@ service cloud.firestore {
           'ownerName', 'type', 'purpose', 'location', 'price',
           'description', 'ownerConsent', 'photos', 'status',
           'createdAt', 'submitterUid', 'reviewedAt', 'reviewedBy',
-          'reviewNote', 'videos', 'city', 'mapLink', 'bhk',
+          'reviewNote', 'videos', 'city', 'mapLink', 'bhk', 'areaSqm', 'saleType', 'listedBy', 'possession',
           'areaSqft', 'floor', 'furnishing', 'parking', 'deposit',
           'priceNum', 'offerTitle', 'offerText', 'offerUntil',
           'verified', 'featured', 'closed'
@@ -72,6 +72,10 @@ service cloud.firestore {
           )
         ))
         && (!('bhk' in data) || (data.bhk is string && data.bhk.size() <= 20))
+        && (!('areaSqm' in data) || (data.areaSqm is string && data.areaSqm.size() <= 20))
+        && (!('saleType' in data) || data.saleType in ['new', 'resale'])
+        && (!('listedBy' in data) || data.listedBy in ['owner', 'agent', 'developer'])
+        && (!('possession' in data) || data.possession in ['ready', '1', '2', '3', '5'])
         && (!('areaSqft' in data) || (data.areaSqft is string && data.areaSqft.size() <= 20))
         && (!('floor' in data) || (data.floor is string && data.floor.size() <= 30))
         && (!('furnishing' in data) || (data.furnishing is string && data.furnishing.size() <= 30))
