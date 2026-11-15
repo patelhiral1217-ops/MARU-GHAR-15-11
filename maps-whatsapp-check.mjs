@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-const backend=fs.readFileSync('assets/maru-ghar-backend.js','utf8');
+const backend=fs.readFileSync('maru-ghar-backend.js','utf8');
 const admin=fs.readFileSync('admin.html','utf8');
 const rules=fs.readFileSync('firestore.rules','utf8');
 const errors=[];

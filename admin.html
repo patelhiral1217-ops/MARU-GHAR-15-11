@@ -2229,7 +2229,7 @@ window.MG_I18N_DICTIONARY={
 })();
 </script>
 <!-- MG_I18N_INLINE_BUNDLE_END -->
-<script src="assets/maru-ghar-file-mode.js?v=20261102r5"></script>
+<script src="./maru-ghar-file-mode.js?v=20261102r5"></script>
 <script>
 (function(){var urls=[];function render(){var box=document.getElementById('adminMediaPreview');if(!box)return;urls.forEach(function(u){URL.revokeObjectURL(u)});urls=[];box.textContent='';[['adminPhotos','img'],['adminVideos','video']].forEach(function(p){var inp=document.getElementById(p[0]);if(!inp)return;Array.prototype.forEach.call(inp.files||[],function(f){var u=URL.createObjectURL(f);urls.push(u);var el=document.createElement(p[1]);el.src=u;el.title=f.name;el.style.cssText='width:92px;height:92px;object-fit:cover;border-radius:10px;border:1px solid #ffffff30';if(p[1]==='video'){el.muted=true;el.preload='metadata'}box.appendChild(el)})})}
 document.addEventListener('change',function(e){if(e.target&&(e.target.id==='adminPhotos'||e.target.id==='adminVideos'))render()});
