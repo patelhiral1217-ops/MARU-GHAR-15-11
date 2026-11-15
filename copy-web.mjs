@@ -26,7 +26,6 @@ const publicFiles = [
   'maru-ghar-file-mode.js',
   'maru-ghar-discovery-upgrades.js',
   'maru-ghar-24-completion.js',
-  'maru-ghar-24-completion.js',
   'maru-ghar-qr.js',
   'maru-ghar-i18n.js',
   'maru-ghar-i18n-complete.js'
@@ -56,6 +55,7 @@ for (const required of [
   'maru-ghar-submit-toggle.js',
   'maru-ghar-file-mode.js',
   'maru-ghar-discovery-upgrades.js',
+  'maru-ghar-24-completion.js',
   'maru-ghar-qr.js'
 ]) {
   if (!fs.existsSync(path.join(out, required))) {
