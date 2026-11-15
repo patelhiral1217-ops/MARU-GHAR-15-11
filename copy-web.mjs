@@ -57,6 +57,7 @@ for (const required of [
   'maru-ghar-file-mode.js',
   'maru-ghar-discovery-upgrades.js',
   'maru-ghar-24-completion.js',
+  'maru-ghar-site-content.js',
   'maru-ghar-qr.js'
 ]) {
   if (!fs.existsSync(path.join(out, required))) {
