@@ -24,7 +24,7 @@ jobs:
           zip -r /tmp/MARU-GHAR-FINAL-SOURCE.zip . -x ".git/*" "node_modules/*" "functions/node_modules/*" ".firebase/*" "MARU-GHAR-FINAL-SOURCE.zip"
           cp /tmp/MARU-GHAR-FINAL-SOURCE.zip ./MARU-GHAR-FINAL-SOURCE.zip
       - name: Upload final project ZIP
-        if: success() && github.event_name == 'push'
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: MARU-GHAR-FINAL-SOURCE
