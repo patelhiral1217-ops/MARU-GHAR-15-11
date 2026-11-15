@@ -49,8 +49,8 @@ const makeDom=()=>{
 };
 
 const dom=makeDom();
-vm.runInNewContext(fs.readFileSync('assets/maru-ghar-i18n.js','utf8'),dom.context);
-vm.runInNewContext(fs.readFileSync('assets/maru-ghar-i18n-complete.js','utf8'),dom.context);
+vm.runInNewContext(fs.readFileSync('maru-ghar-i18n.js','utf8'),dom.context);
+vm.runInNewContext(fs.readFileSync('maru-ghar-i18n-complete.js','utf8'),dom.context);
 const change=lang=>{dom.select.value=lang;for(const fn of dom.select.handlers.change||[])fn();for(const fn of dom.document.handlers.change||[])fn({target:dom.select});};
 change('en');
 const n=dom.nodes;
