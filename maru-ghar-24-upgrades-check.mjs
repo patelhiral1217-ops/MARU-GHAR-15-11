@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const read=p=>fs.readFileSync(p,'utf8');
-const index=read('index.html'),admin=read('admin.html'),upgrade=read('maru-ghar-24-upgrades.js'),adminContent=read('maru-ghar-admin-content.js'),publicContent=read('maru-ghar-public-content.js'),rules=read('firestore.rules'),backend=read('maru-ghar-backend.js'),copy=read('copy-web.mjs');
+const index=read('index.html'),admin=read('admin.html'),upgrade=read('maru-ghar-24-upgrades.js'),adminContent=read('maru-ghar-admin-content.js'),extras=read('maru-ghar-extras.js'),publicContent=read('maru-ghar-public-content.js'),rules=read('firestore.rules'),backend=read('maru-ghar-backend.js'),copy=read('copy-web.mjs');
 const checks=[
  ['public upgrade script wired',index.includes('maru-ghar-24-upgrades.js')],
  ['public content listener wired',index.includes('maru-ghar-public-content.js')],
@@ -12,7 +12,7 @@ const checks=[
  ['sale and rent recent sections',upgrade.includes('mgRecentSale')&&upgrade.includes('mgRecentRent')],
  ['footer buyer tenant city and app links',upgrade.includes('FOR BUYERS')&&upgrade.includes('FOR TENANTS')&&upgrade.includes('POPULAR CITIES')&&upgrade.includes('Google Play')&&upgrade.includes('App Store')],
  ['login required for property contact',upgrade.includes('gateContact')&&upgrade.includes('isAnonymous')],
- ['customer name and mobile profile fields',upgrade.includes('customerDisplayName')&&upgrade.includes('customerMobile')&&adminContent.includes('displayName')],
+ ['customer name and mobile profile fields',upgrade.includes('customerDisplayName')&&upgrade.includes('customerMobile')&&extras.includes('displayName:name')&&extras.includes('phone:phone')],
  ['private customer profile Firestore rule',rules.includes('CUSTOMER PRIVATE PROFILE')&&rules.includes('request.auth.uid == uid')],
  ['footer QR generation and recent contact CTA',upgrade.includes('qrcode-generator')&&upgrade.includes('સંપર્ક નંબર જુઓ')],
  ['family house illustration',upgrade.includes('mg24-admin-illustration')],
