@@ -2,8 +2,8 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const pages=['index.html','admin.html','privacy.html','download.html'];
 const read=p=>fs.readFileSync(p,'utf8');
-const complete=read('assets/maru-ghar-i18n-complete.js');
-const central=read('assets/maru-ghar-i18n.js');
+const complete=read('maru-ghar-i18n-complete.js');
+const central=read('maru-ghar-i18n.js');
 import vm from 'node:vm';
 const dictionaryContext={window:{}};vm.runInNewContext(central,dictionaryContext);
 const sharedDictionary=dictionaryContext.window.MG_I18N_DICTIONARY;
@@ -50,16 +50,16 @@ for(const phrase of ['વેબસાઇટ / એપ ખોલો','Android APK 
 console.log('I18N STRUCTURE CHECK PASS — selectors, persisted language, page language attribute, privacy/download dictionaries, customer/admin handlers and www mirrors. This is a structural check, not full translation coverage or browser E2E proof.');
 
 for(const marker of ['Select City','Property Type','Owner Name','Mobile Number','Submit Property for Approval','Gandhinagar','Ahmedabad','Surat'])assert.ok(complete.includes(marker),`supplemental language coverage missing: ${marker}`);
-for(const marker of ['data-mg-i18n-inline="engine"','assets/maru-ghar-form-steps.js'])assert.ok(home.includes(marker),`customer page script missing: ${marker}`);
-const wizard=read('assets/maru-ghar-form-steps.js');for(const marker of ["names:['ownerName']","names:['ownerPhone']","names:['location']","names:['city']","names:['type']","names:['purpose']","names:['bhk']","names:['price']",'mg-form-step','આગળ વધો'])assert.ok(wizard.includes(marker),`property wizard step missing: ${marker}`);
+for(const marker of ['data-mg-i18n-inline="engine"','maru-ghar-form-steps.js'])assert.ok(home.includes(marker),`customer page script missing: ${marker}`);
+const wizard=read('maru-ghar-form-steps.js');for(const marker of ["names:['ownerName']","names:['ownerPhone']","names:['location']","names:['city']","names:['type']","names:['purpose']","names:['bhk']","names:['price']",'mg-form-step','આગળ વધો'])assert.ok(wizard.includes(marker),`property wizard step missing: ${marker}`);
 for(const page of pages)assert.ok(read(page).includes('data-mg-i18n-inline="engine"'),`${page}: inline supplemental translator not loaded`);
 
-const submitToggle=read('assets/maru-ghar-submit-toggle.js');
+const submitToggle=read('maru-ghar-submit-toggle.js');
 for(const marker of ['propertyFormToggle','propertySubmitContent','content.hidden=!open',"content.style.display=open?'grid':'none'",'a[href="#submit"]','mg-language-changed','mgTogglePropertyForm'])assert.ok(submitToggle.includes(marker),`property submit panel behavior missing: ${marker}`);
 assert.ok(home.includes('id="propertySubmitContent" class="mg-submit-content" hidden'), 'property form must be hidden by default');
 assert.ok(home.includes('id="propertyFormToggle"'), 'property form open control missing');
 assert.ok(home.includes('window.mgTogglePropertyForm'), 'property form inline click fallback missing');
-assert.ok(home.includes('assets/maru-ghar-submit-toggle.js'), 'property form toggle script missing');
+assert.ok(home.includes('maru-ghar-submit-toggle.js'), 'property form toggle script missing');
 assert.ok(complete.includes('window.MG_I18N_DICTIONARY'),'complete translator must merge the central page dictionary');
 assert.ok(complete.includes('onLanguageChange'),'language selector input fallback missing');
 console.log('ADDITIONAL UI CHECK PASS — language dictionaries, city translations, sequential form steps and initially-collapsed property submission panel.');
