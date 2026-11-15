@@ -1,4 +1,4 @@
-import { firebaseConfig, cloudinaryConfig, isFirebaseConfigured, isCloudinaryConfigured } from '../firebase-config.js';
+import { firebaseConfig, cloudinaryConfig, isFirebaseConfigured, isCloudinaryConfigured } from './firebase-config.js';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import { getFirestore, collection, getDocs, getDoc, doc, query, where, orderBy, limit, startAfter, addDoc, setDoc, serverTimestamp, Timestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
