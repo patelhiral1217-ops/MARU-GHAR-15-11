@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 const html=fs.readFileSync('index.html','utf8');
-const extras=fs.readFileSync('assets/maru-ghar-extras.js','utf8');
-const fileMode=fs.readFileSync('assets/maru-ghar-file-mode.js','utf8');
+const extras=fs.readFileSync('maru-ghar-extras.js','utf8');
+const fileMode=fs.readFileSync('maru-ghar-file-mode.js','utf8');
 const errors=[];
 const requiredIds=['customerAccount','customerEmail','customerPassword','customerRegister','customerLogin','customerLogout','customerStatus','customerFavList','customerNotifications','customerExport','customerDelete','customerMyProperties','customerMyPropertiesList','customerMyPropertiesReload'];
 for(const id of requiredIds) if(!html.includes(`id="${id}"`)) errors.push(`Customer account control missing: ${id}`);
@@ -25,7 +25,7 @@ for(const marker of [
   "if(!status)return;"
 ]) if(!extras.includes(marker)) errors.push(`Customer auth flow marker missing: ${marker}`);
 if(!fs.readFileSync('firestore.rules','utf8').includes("resource.data.submitterUid == request.auth.uid")) errors.push('Owner-only listing read rule is missing');
-if(!html.includes('<script type="module" src="assets/maru-ghar-extras.js"></script>')) errors.push('Customer auth module is not loaded on home page');
+if(!html.includes('<script type="module" src="maru-ghar-extras.js"></script>')) errors.push('Customer auth module is not loaded on home page');
 if(!fileMode.includes("protocol==='file:'||protocol==='content:'") || !fileMode.includes("href.startsWith('content:')") || !fileMode.includes('Firebase Login')) errors.push('file:// and Android content:// modes must clearly explain that Firebase login is unavailable');
 if(!html.includes("location.protocol==='content:'") || !html.includes('File Managerમાંથી સીધી ખોલેલી છે')) errors.push('Android content:// warning banner is missing');
 if(!html.includes('autocomplete="email"') || !html.includes('autocomplete="current-password"')) errors.push('Email/password autocomplete hints missing');
