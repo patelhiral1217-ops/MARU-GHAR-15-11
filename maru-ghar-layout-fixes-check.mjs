@@ -10,7 +10,7 @@ assert.match(script,/#moreFilters\[hidden\]/,'secondary filter panel can be hidd
 assert.match(script,/mgMoreFiltersToggle/,'accessible expand/collapse control exists');
 assert.match(script,/linear-gradient\(145deg,#e8eee6/,'large white panels use coordinated sage palette');
 assert.match(index,/＋ ભાવ અને વધુ ફિલ્ટર ખોલો/,'Gujarati filter toggle phrase is translated');
-assert.match(index,/Browse Properties/,'English interface labels are present');
+assert.match(index,/View Properties/,'English interface labels are present');
 assert.match(index,/प्रॉपर्टी देखें/,'Hindi interface labels are present');
 assert.match(copy,/maru-ghar-layout-fixes\.js/,'hosting build copies the layout fix script');
 assert.match(copy,/Hosting build missing required file/,'hosting preflight validates required files');
