@@ -14,7 +14,6 @@ const publicFiles = [
   'firebase-config.js',
   'manifest.webmanifest',
   'icon.ico',
-  'icon.png',
   'maru-ghar-approved-app-icon.png',
   'maru-ghar-logo-3d-512.png',
   'maru-ghar-backend.js',
