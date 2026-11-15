@@ -1,0 +1,31 @@
+name: Maru Ghar Quality Checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build website folder
+        run: npm run copy-web
+      - name: Run static and regression checks
+        run: npm test
+      - name: Package complete project source
+        if: success() && github.event_name == 'push'
+        run: |
+          zip -r /tmp/MARU-GHAR-FINAL-SOURCE.zip . -x ".git/*" "node_modules/*" ".firebase/*" "MARU-GHAR-FINAL-SOURCE.zip"
+          cp /tmp/MARU-GHAR-FINAL-SOURCE.zip ./MARU-GHAR-FINAL-SOURCE.zip
+      - name: Upload final project ZIP
+        if: success() && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: MARU-GHAR-FINAL-SOURCE
+          path: MARU-GHAR-FINAL-SOURCE.zip
+          if-no-files-found: error
+          retention-days: 14
