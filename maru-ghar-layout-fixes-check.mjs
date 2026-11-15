@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const index=fs.readFileSync('index.html','utf8');
+const script=fs.readFileSync('maru-ghar-layout-fixes.js','utf8');
+const copy=fs.readFileSync('copy-web.mjs','utf8');
+assert.match(index,/maru-ghar-layout-fixes\.js/,'layout fix script is loaded');
+assert.match(script,/header \.brand \.badge img/,'logo is protected from shrinking');
+assert.match(script,/header \.navlinks[^}]*flex-wrap:nowrap/,'navigation actions stay in one horizontal row');
+assert.match(script,/#moreFilters\[hidden\]/,'secondary filter panel can be hidden');
+assert.match(script,/mgMoreFiltersToggle/,'accessible expand/collapse control exists');
+assert.match(script,/linear-gradient\(145deg,#e8eee6/,'large white panels use coordinated sage palette');
+assert.match(index,/＋ ભાવ અને વધુ ફિલ્ટર ખોલો/,'Gujarati filter toggle phrase is translated');
+assert.match(index,/View Properties/,'English interface labels are present');
+assert.match(index,/प्रॉपर्टी देखें/,'Hindi interface labels are present');
+assert.match(copy,/maru-ghar-layout-fixes\.js/,'hosting build copies the layout fix script');
+assert.match(copy,/Hosting build missing required file/,'hosting preflight validates required files');
+console.log('LAYOUT POLISH CHECK PASS — logo, one-line navigation, collapsed filters, coordinated colors and multilingual labels.');

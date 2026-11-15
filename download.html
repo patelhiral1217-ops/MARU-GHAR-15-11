@@ -40,8 +40,7 @@ small{color:var(--muted)}.note{font-size:13px;color:#b42318;display:none}@media 
 </script>
 
 <!-- MG_I18N_INLINE_BUNDLE_START: standalone index.html / Chrome file:// support -->
-<script data-mg-i18n-inline="central">
-/* Central Gujarati/Hindi/English interface dictionary. User-entered listing content is never translated. */
+<script data-mg-i18n-inline="central">/* Central Gujarati/Hindi/English interface dictionary. User-entered listing content is never translated. */
 window.MG_I18N_DICTIONARY={
   "EMI બંધ કરો":{"hi":"EMI बंद करें","en":"Close EMI"},
   "માલિકનો નંબર સામાન્ય મુલાકાતીઓને જાહેર દેખાતો નથી. પસંદ કરેલી પ્રોપર્ટીના સંપર્ક બટનથી જ માલિકનો સંપર્ક કરો.":{"hi":"मालिक का मोबाइल नंबर सामान्य आगंतुकों को सार्वजनिक रूप से नहीं दिखाया जाता। चुनी गई प्रॉपर्टी के संपर्क बटन से ही मालिक से संपर्क करें।","en":"The owner's number is not shown publicly. Contact the owner only through the Contact button on the selected property."},
@@ -1658,9 +1657,9 @@ window.MG_I18N_DICTIONARY={
   "ઇન્ટરનેટ નથી — કેટલીક વિગતો અટકી શકે":{"hi":"इंटरनेट नहीं है — कुछ जानकारी रुक सकती है","en":"No internet — some details may be unavailable"},
   "ઇન્ટરનેટ પાછું આવ્યું":{"hi":"इंटरनेट वापस आ गया","en":"You are back online"}
 };
+
 </script>
-<script data-mg-i18n-inline="engine">
-/* Supplemental complete UI translation layer. It only translates known interface phrases;
+<script data-mg-i18n-inline="engine">/* Supplemental complete UI translation layer. It only translates known interface phrases;
    user-entered property/customer content is intentionally excluded. */
 (()=>{
   const dict={
@@ -1745,6 +1744,49 @@ window.MG_I18N_DICTIONARY={
   if(window.MG_I18N_DICTIONARY){for(const [gu,v] of Object.entries(window.MG_I18N_DICTIONARY)){dict[gu]=`${v.hi||gu}|${v.en||gu}`;}}
   /* Backward compatibility if an older page still provides the original home dictionary. */
   if(window.MG_LANGUAGE_DICTIONARY){for(const [gu,v] of Object.entries(window.MG_LANGUAGE_DICTIONARY)){dict[gu]=`${v.hi||gu}|${v.en||gu}`;}}
+  /* Complete missing mixed-language interface labels for every supported language. */
+  Object.assign(dict,{
+   'પ્રોપર્ટી જુઓ':'प्रॉपर्टी देखें|View Properties','પ્રોપર્ટી ઉમેરો':'प्रॉपर्टी जोड़ें|Add Property','સંપર્ક કરો':'संपर्क करें|Contact Us',
+   'એડમિન લોગિન':'एडमिन लॉगिन|Admin Login','તમારી પ્રોપર્ટી શોધો':'अपनी प्रॉपर्टी खोजें|Find a Property',
+   'ભાડે અથવા વેચાણ':'किराये या बिक्री|Rent or Buy','ભાડે':'किराये पर|For Rent','વેચાણ':'बिक्री|For Sale',
+   'બધી કેટેગરી':'सभी श्रेणियाँ|All Categories','આખું ગુજરાત':'पूरा गुजरात|All Gujarat','શોધો':'खोजें|Search',
+   'પ્રોપર્ટી લિસ્ટિંગ':'प्रॉपर्टी सूची|Property Listings','બધી પ્રોપર્ટી':'सभी प्रॉपर्टी|All Properties',
+   'દૃશ્ય (કોલમ):':'दृश्य (कॉलम):|View (columns):','❤️ મનપસંદ':'❤️ पसंदीदा|❤️ Favorites',
+   'BHK: બધા':'BHK: सभी|BHK: All','વેરિફાઇડ: બધી':'सत्यापित: सभी|Verified: All',
+   'ફર્નિચર: બધા':'फर्नीचर: सभी|Furnishing: All','ફર્નિશ્ડ':'सुसज्जित|Furnished',
+   'સેમી ફર્નિશ્ડ':'अर्ध-सुसज्जित|Semi-furnished','અનફર્નિશ્ડ':'बिना फर्नीचर|Unfurnished',
+   '₹ ઓછામાં ઓછું':'₹ न्यूनतम|₹ Minimum Price','₹ વધુમાં વધુ':'₹ अधिकतम|₹ Maximum Price',
+   'ન્યૂનતમ ભાવ':'न्यूनतम कीमत|Minimum Price','મહત્તમ ભાવ':'अधिकतम कीमत|Maximum Price',
+   'નવી પહેલાં':'नवीनतम पहले|Newest First','ભાવ: ઓછો પહેલાં':'कम कीमत पहले|Price: Low to High','ભાવ: વધુ પહેલાં':'अधिक कीमत पहले|Price: High to Low',
+   'તમારા શહેરનું ઘર શોધવાનું સરળ સરનામું':'आपके शहर में घर खोजने का आसान ठिकाना|Your Local Home Search Destination',
+   'તમારી જરૂરિયાતનું':'आपकी ज़रूरत का|Find What You Need','અહીં શોધો.':'यहाँ खोजें।|Right Here.',
+   'આખા ગુજરાતમાં ઘર, ફ્લેટ, દુકાન, પ્લોટ, ઓફિસ અને પી.જી. સરળતાથી શોધો.':'पूरे गुजरात में घर, फ्लैट, दुकान, प्लॉट, ऑफिस और PG आसानी से खोजें।|Easily find homes, flats, shops, plots, offices and PGs across Gujarat.',
+   'વિસ્તાર અથવા પ્રોપર્ટી શોધો':'क्षेत्र या प्रॉपर्टी खोजें|Search Area or Property',
+   '＋ ભાવ અને વધુ ફિલ્ટર ખોલો':'＋ कीमत और अन्य फ़िल्टर खोलें|＋ Open Price & More Filters',
+   '− ઓછા ફિલ્ટર છુપાવો':'− कम फ़िल्टर छिपाएँ|− Hide Extra Filters',
+   'શહેર':'शहर|City','જિલ્લો પસંદ કરો':'जिला चुनें|Select District','કેટેગરી':'श्रेणी|Category',
+   'ક્ષેત્રફળ (ચો.મી.)':'क्षेत्रफल (वर्ग मीटर)|Area (sq. m.)','ચોરસ મીટર':'वर्ग मीटर|Square metres',
+   'મિલકતનો પ્રકાર':'संपत्ति का प्रकार|Property Type','નવી મિલકત':'नई संपत्ति|New Property','રીસેલ':'रीसेल|Resale',
+   'લિસ્ટેડ બાય':'किसके द्वारा सूचीबद्ध|Listed By','માલિક':'मालिक|Owner','એજન્ટ':'एजेंट|Agent','ડેવલપર':'डेवलपर|Developer',
+   'પઝેશન સ્ટેટસ':'कब्ज़े की स्थिति|Possession Status','રેડી ટુ મૂવ':'तुरंत रहने योग्य|Ready to Move',
+   'લાઇવ લિસ્ટિંગ લોડ થઈ રહ્યું છે...':'लाइव लिस्टिंग लोड हो रही हैं...|Loading Live Listings...',
+   'તમારી જરૂર મુજબ કેટેગરી પસંદ કરો.':'अपनी ज़रूरत के अनुसार श्रेणी चुनें।|Choose a category that suits your needs.',
+   'લિસ્ટિંગ લોડ થઈ રહી છે…':'लिस्टिंग लोड हो रही हैं…|Loading listings…',
+   'હાલ મંજૂર લિસ્ટિંગ ઉપલબ્ધ નથી.':'अभी कोई स्वीकृत लिस्टिंग उपलब्ध नहीं है।|No approved listings available yet.',
+   'નવા સમાચાર અને માર્ગદર્શન ટૂંક સમયમાં અહીં દેખાશે.':'नई खबरें और मार्गदर्शन जल्द यहाँ दिखाई देंगे।|News and guides will appear here soon.',
+   'મારું ઘર સમાચાર અને માર્ગદર્શન':'मेरा घर समाचार और मार्गदर्शन|Maru Ghar News & Guides',
+   'FOR BUYERS · ખરીદદારો માટે':'खरीदारों के लिए|FOR BUYERS','FOR TENANTS · ભાડુઆતો માટે':'किरायेदारों के लिए|FOR TENANTS',
+   'POPULAR CITIES · લોકપ્રિય શહેરો':'लोकप्रिय शहर|POPULAR CITIES','POPULAR SEARCHES · લોકપ્રિય खोज':'लोकप्रिय खोज|POPULAR SEARCHES',
+   'ઘર ખરીદો':'घर खरीदें|Buy a Home','ફ્લેટ ખરીદો':'फ्लैट खरीदें|Buy an Apartment',
+   'ભાડે ઘર શોધો':'किराये का घर खोजें|Find a Rental Home','ભાડે ફ્લેટ શોધો':'किराये का फ्लैट खोजें|Find a Rental Apartment',
+   'ન્યૂઝ અને માર્ગદર્શન':'समाचार और मार्गदर्शन|News & Guides','એપ ડાઉનલોડ':'ऐप डाउनलोड करें|Download App',
+   'ગુજરાતી':'गुजराती|Gujarati','સેટિંગ્સ':'सेटिंग्स|Settings','બંધ કરો':'बंद करें|Close',
+   'તમારી પ્રોપર્ટી લિસ્ટ કરો':'अपनी प्रॉपर्टी सूचीबद्ध करें|List Your Property',
+   'પ્રોપર્ટી ભાડે આપવી છે કે વેચવી છે?':'प्रॉपर्टी किराये पर देनी है या बेचनी है?|Would You Like to Rent or Sell Your Property?',
+   'તમારી પ્રોપર્ટીની વિગત ભરો. ચકાસણી પછી તે જાહેર થશે.':'अपनी प्रॉपर्टी का विवरण भरें। जाँच के बाद प्रकाशित किया जाएगा।|Enter your property details. It will be published after review.',
+   'સંપર્ક માટે ગ્રાહક લોગિન જરૂરી':'संपर्क करने के लिए ग्राहक लॉगिन ज़रूरी है|Customer login is required to contact the owner',
+   'કિંમત માટે સંપર્ક':'कीमत के लिए संपर्क करें|Contact for Price','વિસ્તાર માટે સંપર્ક':'क्षेत्रफल के लिए संपर्क करें|Contact for Area'
+  });
   const map={};
   for(const [gu,pair] of Object.entries(dict)){
     const parts=String(pair||'').split('|');
@@ -1904,6 +1946,7 @@ window.MG_I18N_DICTIONARY={
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
 })();
+
 </script>
 <!-- MG_I18N_INLINE_BUNDLE_END -->
 </body></html>

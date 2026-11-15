@@ -23,7 +23,7 @@ for(const [gu,en,hi] of cases){
   if(window.mgI18nText(gu)!==gu)throw new Error(`Gujarati translation failed: ${gu}`);
   select.value='en';handlers.change({target:select});if(window.mgI18nText(gu)!==en)throw new Error(`English translation failed: ${gu} -> ${window.mgI18nText(gu)}`);
   if(document.documentElement.lang!=='en')throw new Error('English page language attribute did not update');
-  select.value='hi';handlers.change({target:select});if(window.mgI18nText(gu)!==hi)throw new Error(`Hindi translation failed: ${gu} -> ${window.mgI18nText(gu)}`);
+  select.value='hi';handlers.change({target:select});if(window.mgI18nText(gu)!==hi)throw new Error(`Hindi translation failed: ${gu} -> ${JSON.stringify(window.mgI18nText(gu))}; expected ${JSON.stringify(hi)}; actual codes ${[...window.mgI18nText(gu)].map(x=>x.codePointAt(0).toString(16)).join(',')}; expected codes ${[...hi].map(x=>x.codePointAt(0).toString(16)).join(',')}`);
   if(document.documentElement.lang!=='hi')throw new Error('Hindi page language attribute did not update');
 }
 if(typeof window.mgAdminTranslate!=='function')throw new Error('Admin translation API missing');
