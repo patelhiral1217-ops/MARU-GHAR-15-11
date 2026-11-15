@@ -6,8 +6,8 @@ const body={nodeType:1,querySelectorAll:()=>[],closest:()=>null,getAttribute:()=
 const document={body,documentElement:{lang:'gu'},readyState:'complete',getElementById:id=>(id==='mgLanguage'||id==='mgAdminLanguage')?select:null,addEventListener(){},createTreeWalker(){return{nextNode(){return null}}}};
 const window={addEventListener(){},dispatchEvent(){}};
 const context={window,document,NodeFilter:{SHOW_TEXT:4},MutationObserver:class{observe(){}},localStorage:{getItem:()=>select.value,setItem(){}},Event:class{},setTimeout:fn=>fn()};
-vm.runInNewContext(fs.readFileSync('assets/maru-ghar-i18n.js','utf8'),context);
-vm.runInNewContext(fs.readFileSync('assets/maru-ghar-i18n-complete.js','utf8'),context);
+vm.runInNewContext(fs.readFileSync('maru-ghar-i18n.js','utf8'),context);
+vm.runInNewContext(fs.readFileSync('maru-ghar-i18n-complete.js','utf8'),context);
 const gujarati=/[\u0A80-\u0AFF]/;
 const pages=['index.html','admin.html','privacy.html','download.html'];
 const failures=[];
