@@ -15,7 +15,17 @@ const publicFiles = [
   'manifest.webmanifest',
   'icon.ico',
   'icon.png',
-  'maru-ghar-approved-app-icon.png'
+  'maru-ghar-approved-app-icon.png',
+  'maru-ghar-logo-3d-512.png',
+  'maru-ghar-backend.js',
+  'maru-ghar-extras.js',
+  'maru-ghar-form-steps.js',
+  'maru-ghar-polish.js',
+  'maru-ghar-delight.js',
+  'maru-ghar-submit-toggle.js',
+  'maru-ghar-file-mode.js',
+  'maru-ghar-discovery-upgrades.js',
+  'maru-ghar-qr.js'
 ];
 
 for (const file of publicFiles) {
@@ -34,13 +44,15 @@ for (const required of [
   'index.html',
   'admin.html',
   'firebase-config.js',
-  'assets/maru-ghar-backend.js',
-  'assets/maru-ghar-extras.js',
-  'assets/maru-ghar-form-steps.js',
-  'assets/maru-ghar-polish.js',
-  'assets/maru-ghar-delight.js',
-  'assets/maru-ghar-submit-toggle.js',
-  'assets/maru-ghar-file-mode.js'
+  'maru-ghar-backend.js',
+  'maru-ghar-extras.js',
+  'maru-ghar-form-steps.js',
+  'maru-ghar-polish.js',
+  'maru-ghar-delight.js',
+  'maru-ghar-submit-toggle.js',
+  'maru-ghar-file-mode.js',
+  'maru-ghar-discovery-upgrades.js',
+  'maru-ghar-qr.js'
 ]) {
   if (!fs.existsSync(path.join(out, required))) {
     throw new Error(`Hosting build missing required file: ${required}`);
