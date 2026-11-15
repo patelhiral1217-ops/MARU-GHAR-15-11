@@ -15,8 +15,8 @@ const document={body,documentElement:{lang:'gu'},readyState:'complete',getElemen
 const window={addEventListener:()=>{},dispatchEvent:()=>{}};
 const local={value:'gu'};
 const languageContext={window,document,NodeFilter:{SHOW_TEXT:4},MutationObserver:class{observe(){}},localStorage:{getItem:()=>local.value,setItem:(k,v)=>{local.value=v}},setTimeout:fn=>fn(),Event:class{}};
-vm.runInNewContext(fs.readFileSync('assets/maru-ghar-i18n.js','utf8'),languageContext);
-vm.runInNewContext(fs.readFileSync('assets/maru-ghar-i18n-complete.js','utf8'),languageContext);
+vm.runInNewContext(fs.readFileSync('maru-ghar-i18n.js','utf8'),languageContext);
+vm.runInNewContext(fs.readFileSync('maru-ghar-i18n-complete.js','utf8'),languageContext);
 const cases=[['પ્રોપર્ટી જુઓ','View Properties','प्रॉपर्टी देखें'],['ગોપનીયતા નીતિ','Privacy Policy','गोपनीयता नीति'],['એડમિન લોગિન','Admin Login','एडमिन लॉगिन'],['🌐 વેબસાઇટ / એપ ખોલો','🌐 Open Website / App','🌐 वेबसाइट / ऐप खोलें']];
 for(const [gu,en,hi] of cases){
   select.value='gu';handlers.change({target:select});
@@ -39,7 +39,7 @@ const elements={submit:section,propertyFormToggle:toggle,propertySubmitContent:c
 const formDocument={readyState:'complete',getElementById:id=>elements[id]||null,addEventListener:()=>{}};
 const formWindow={addEventListener:()=>{}};
 const formContext={window:formWindow,document:formDocument,location:{hash:''},requestAnimationFrame:fn=>fn()};
-vm.runInNewContext(fs.readFileSync('assets/maru-ghar-submit-toggle.js','utf8'),formContext);
+vm.runInNewContext(fs.readFileSync('maru-ghar-submit-toggle.js','utf8'),formContext);
 formWindow.mgTogglePropertyForm(true);
 if(content.hidden||content.style.display!=='grid'||attrs['aria-expanded']!=='true')throw new Error('Property form did not open');
 formWindow.mgTogglePropertyForm(false);
