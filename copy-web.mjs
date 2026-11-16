@@ -27,6 +27,7 @@ const publicFiles = [
   'maru-ghar-discovery-upgrades.js',
   'maru-ghar-24-upgrades.js',
   'maru-ghar-layout-fixes.js',
+  'maru-ghar-requested-ui-fixes.js',
   'maru-ghar-public-content.js',
   'maru-ghar-admin-content.js',
   'maru-ghar-qr.js',
