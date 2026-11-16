@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 const root=process.cwd();
-const required=['index.html','admin.html','privacy.html','download.html','firebase-config.js','google-services.json','firestore.rules','firestore.indexes.json','firebase.json','maru-ghar-backend.js','maru-ghar-extras.js','maru-ghar-qr.js','maru-ghar-form-steps.js','maru-ghar-submit-toggle.js','maru-ghar-i18n.js','maru-ghar-i18n-complete.js','maru-ghar-file-mode.js','functions/index.js','www/index.html','www/admin.html'];
+const required=['index.html','admin.html','privacy.html','download.html','firebase-config.js','google-services.json','firestore.rules','firestore.indexes.json','firebase.json','maru-ghar-backend.js','maru-ghar-extras.js','maru-ghar-qr.js','maru-ghar-form-steps.js','maru-ghar-submit-toggle.js','maru-ghar-i18n.js','maru-ghar-i18n-complete.js','maru-ghar-file-mode.js','maru-ghar-requested-ui-fixes.js','functions/index.js','www/index.html','www/admin.html'];
 const errors=[];
 for(const f of required) if(!fs.existsSync(path.join(root,f))) errors.push(`Missing file: ${f}`);
 for(const f of ['package.json','capacitor.config.json','firebase.json','firestore.indexes.json','functions/package.json','google-services.json']){try{JSON.parse(fs.readFileSync(path.join(root,f),'utf8'))}catch(e){errors.push(`Invalid JSON ${f}: ${e.message}`)}}
