@@ -29,6 +29,7 @@ const publicFiles = [
   'maru-ghar-layout-fixes.js',
   'maru-ghar-requested-ui-fixes.js',
   'maru-ghar-theme-unifier.js',
+  'maru-ghar-tools-restored.js',
   'maru-ghar-public-content.js',
   'maru-ghar-admin-content.js',
   'maru-ghar-qr.js',
