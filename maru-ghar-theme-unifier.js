@@ -29,8 +29,19 @@
    /* One coordinated raised 3D treatment for every public action button. */
    :where(button,input[type=button],input[type=submit],input[type=reset],a[role=button],.btn,.outline,.wa-btn,.contact-wa,.mg-head-action,.mg-chip,.mg-mapbtn,.mg-compare-shortcut,.mg-contact-trigger,.mg-contact-main,.mg-mobile-nav a,.mg-settings-grid button,.admin-shortcuts a,.admin-shortcuts button,.admin-quick a,.admin-quick button,.backup-actions button,.login-submit,.mg-submit-toggle,.mg-tools button,.cats .cat,.gridsw button,.searchbox button,.morefilters button,.property-foot a,.property-foot button,.primary){
     border-radius:13px!important;border:1px solid #d8bc70!important;font-weight:850!important;transition:transform .18s ease,box-shadow .18s ease,filter .18s ease!important;
-    background:linear-gradient(145deg,#e8d28e 0%,#d1ad55 48%,#b58a32 100%)!important;color:#17372e!important;
+    background:linear-gradient(145deg,#f4f6f7 0%,#d6dde2 28%,#f0d58a 58%,#c6a34f 82%,#eef1f3 100%)!important;color:#17372e!important;
     box-shadow:0 4px 0 #80652d,0 8px 14px #0003,inset 0 1px 2px #fff9!important;text-shadow:0 1px #fff5
+   }
+   /* Apply the same restrained silver-and-champagne 3D finish to ordinary buttons too. */
+   button:not(.approve):not(.reject):not(.mg-admin-single):not(.mg-submit-toggle){
+    border:1px solid #d7c17f!important;
+    background:linear-gradient(145deg,#f5f7f8 0%,#d9e0e5 32%,#f1d991 68%,#c5a14d 100%)!important;
+    color:#17372e!important;
+    box-shadow:0 4px 0 #8b7546,0 8px 15px #0003,inset 0 1px 2px #fff!important;
+    text-shadow:0 1px #fff8
+   }
+   button:not(.approve):not(.reject):not(.mg-admin-single):not(.mg-submit-toggle):active{
+    transform:translateY(3px)!important;box-shadow:0 1px 0 #80652d,0 3px 7px #0003,inset 0 2px 3px #0002!important
    }
    :where(.searchbox button,.mg-sale-search,.mg-admin-single,.mg-contact-main,.mg-submit-toggle){
     background:linear-gradient(145deg,#24634d 0%,#124333 58%,#092c22 100%)!important;color:#fff0bd!important;border-color:#d8bc70!important;box-shadow:0 4px 0 #061f18,0 8px 14px #0004,inset 0 1px 2px #ffffff55!important;text-shadow:0 1px #0003
