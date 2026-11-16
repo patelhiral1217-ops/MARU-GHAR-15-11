@@ -1,5 +1,9 @@
 /* Central Gujarati/Hindi/English interface dictionary. User-entered listing content is never translated. */
 window.MG_I18N_DICTIONARY={
+  "🧮 EMI કેલ્ક્યુલેટર":{"hi":"🧮 EMI कैलकुलेटर","en":"🧮 EMI Calculator"},
+  "🗺️ નકશો":{"hi":"🗺️ नक्शा","en":"🗺️ Map"},
+  "₹ કિંમત":{"hi":"₹ कीमत","en":"₹ Price"},
+  "📐 ક્ષેત્રફળ (ચો.મી.)":{"hi":"📐 क्षेत्रफल (वर्ग मीटर)","en":"📐 Area (sq. m)"},
   "EMI બંધ કરો":{"hi":"EMI बंद करें","en":"Close EMI"},
   "માલિકનો નંબર સામાન્ય મુલાકાતીઓને જાહેર દેખાતો નથી. પસંદ કરેલી પ્રોપર્ટીના સંપર્ક બટનથી જ માલિકનો સંપર્ક કરો.":{"hi":"मालिक का मोबाइल नंबर सामान्य आगंतुकों को सार्वजनिक रूप से नहीं दिखाया जाता। चुनी गई प्रॉपर्टी के संपर्क बटन से ही मालिक से संपर्क करें।","en":"The owner's number is not shown publicly. Contact the owner only through the Contact button on the selected property."},
   "ગુજરાતી ટાઇપિંગ મદદ":{"hi":"गुजराती टाइपिंग सहायता","en":"Gujarati typing help"},
