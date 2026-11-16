@@ -29,6 +29,7 @@ const publicFiles = [
   'maru-ghar-layout-fixes.js',
   'maru-ghar-requested-ui-fixes.js',
   'maru-ghar-theme-unifier.js',
+  'maru-ghar-tools-restored.js',
   'maru-ghar-public-content.js',
   'maru-ghar-admin-content.js',
   'maru-ghar-qr.js',
@@ -63,6 +64,7 @@ for (const required of [
   'maru-ghar-24-upgrades.js',
   'maru-ghar-layout-fixes.js',
   'maru-ghar-theme-unifier.js',
+  'maru-ghar-tools-restored.js',
   'maru-ghar-public-content.js',
   'maru-ghar-admin-content.js',
   'maru-ghar-qr.js'
