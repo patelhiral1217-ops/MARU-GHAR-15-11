@@ -51,7 +51,12 @@ console.log('I18N STRUCTURE CHECK PASS — selectors, persisted language, page l
 
 for(const marker of ['Select City','Property Type','Owner Name','Mobile Number','Submit Property for Approval','Gandhinagar','Ahmedabad','Surat'])assert.ok(complete.includes(marker),`supplemental language coverage missing: ${marker}`);
 for(const marker of ['data-mg-i18n-inline="engine"','maru-ghar-form-steps.js'])assert.ok(home.includes(marker),`customer page script missing: ${marker}`);
-const wizard=read('maru-ghar-form-steps.js');for(const marker of ["names:['ownerName']","names:['ownerPhone']","names:['location']","names:['city']","names:['type']","names:['purpose']","names:['bhk']","names:['price']",'mg-form-step','આગળ વધો'])assert.ok(wizard.includes(marker),`property wizard step missing: ${marker}`);
+const wizard=read('maru-ghar-form-steps.js');for(const marker of ["names:['ownerName']","names:['ownerPhone']","names:['location']","names:['city']","names:['type']","names:['purpose']","names:['bhk']", "title:'ભાવ અને ક્ષેત્રફળ ઉમેરો',names:['price','priceNum','areaSqft','areaSqm'],manual:true,priceArea:true",'mg-form-step--price-area','if(cfg.manual)return;','આગળ વધો'])assert.ok(wizard.includes(marker),`property wizard step missing: ${marker}`);
+assert.ok(!wizard.includes("names:['price']"),'price must be part of the optional price/area disclosure');
+assert.ok(!wizard.includes("names:['areaSqft']"),'area must be part of the optional price/area disclosure');
+const upgrades=read('maru-ghar-24-upgrades.js');for(const phrase of ['ખરીદદારો માટે','ભાડુઆતો માટે','લોકપ્રિય શહેરો','લોકપ્રિય શોધ'])assert.ok(upgrades.includes(phrase),`Gujarati-only footer heading missing: ${phrase}`);for(const phrase of ['FOR BUYERS','FOR TENANTS','POPULAR CITIES','POPULAR SEARCHES'])assert.ok(!upgrades.includes(phrase),`mixed-language footer heading remains: ${phrase}`);
+assert.ok(read('maru-ghar-polish.js').includes('મારું ઘર · ઘર લોન'),'EMI kicker must be Gujarati-first');
+for(const phrase of ['મારું ઘર · મિલકત','મારું ઘર · ખાસ પસંદગી','મારું ઘર · ગાંધીનગર','સ્લાઇડ 1','સ્લાઇડ 2','સ્લાઇડ 3','પાછલી સ્લાઇડ','આગળની સ્લાઇડ'])assert.ok(home.includes(phrase),`Gujarati homepage label missing: ${phrase}`);
 for(const page of pages)assert.ok(read(page).includes('data-mg-i18n-inline="engine"'),`${page}: inline supplemental translator not loaded`);
 
 const submitToggle=read('maru-ghar-submit-toggle.js');

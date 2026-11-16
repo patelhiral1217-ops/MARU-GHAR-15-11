@@ -10,7 +10,7 @@ const checks=[
  ['sale, listed-by and possession filters',upgrade.includes('mgSaleType')&&upgrade.includes('mgListedBy')&&upgrade.includes('mgPossession')],
  ['price and square-metre ranges',upgrade.includes('mgPriceRange')&&upgrade.includes('mgAreaRange')],
  ['sale and rent recent sections',upgrade.includes('mgRecentSale')&&upgrade.includes('mgRecentRent')],
- ['footer buyer tenant city and app links',upgrade.includes('FOR BUYERS')&&upgrade.includes('FOR TENANTS')&&upgrade.includes('POPULAR CITIES')&&upgrade.includes('Google Play')&&upgrade.includes('App Store')],
+ ['Gujarati footer buyer tenant city headings and app links',upgrade.includes('ખરીદદારો માટે')&&upgrade.includes('ભાડુઆતો માટે')&&upgrade.includes('લોકપ્રિય શહેરો')&&upgrade.includes('લોકપ્રિય શોધ')&&upgrade.includes('Google Play')&&upgrade.includes('App Store')&&!upgrade.includes('FOR BUYERS')&&!upgrade.includes('FOR TENANTS')&&!upgrade.includes('POPULAR CITIES')&&!upgrade.includes('POPULAR SEARCHES')],
  ['login required for property contact',upgrade.includes('gateContact')&&upgrade.includes('isAnonymous')],
  ['customer name and mobile profile fields',upgrade.includes('customerDisplayName')&&upgrade.includes('customerMobile')&&extras.includes('displayName:name')&&extras.includes('phone:phone')],
  ['private customer profile Firestore rule',rules.includes('CUSTOMER PRIVATE PROFILE')&&rules.includes('request.auth.uid == uid')],

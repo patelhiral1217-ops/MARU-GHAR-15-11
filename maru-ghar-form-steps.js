@@ -14,14 +14,12 @@
    {title:'પ્રોપર્ટીનો પ્રકાર',names:['type']},
    {title:'ભાડે કે વેચાણ?',names:['purpose']},
    {title:'BHK પસંદ કરો',names:['bhk']},
-   {title:'અંદાજિત કિંમત / ભાડું',names:['price']},
+   {title:'ભાવ અને ક્ષેત્રફળ ઉમેરો',names:['price','priceNum','areaSqft','areaSqm'],manual:true,priceArea:true},
    {title:'નકશાની લિંક (વૈકલ્પિક)',names:['mapLink']},
-   {title:'ક્ષેત્રફળ (વૈકલ્પિક)',names:['areaSqft']},
    {title:'માળ (વૈકલ્પિક)',names:['floor']},
    {title:'ફર્નિચર (વૈકલ્પિક)',names:['furnishing']},
    {title:'પાર્કિંગ (વૈકલ્પિક)',names:['parking']},
    {title:'ડિપોઝિટ (વૈકલ્પિક)',names:['deposit']},
-   {title:'ભાવ (ફિલ્ટર માટે, વૈકલ્પિક)',names:['priceNum']},
    {title:'સ્કીમનું નામ (વૈકલ્પિક)',names:['offerTitle'],includeOfferHeading:true},
    {title:'સ્કીમ ક્યાં સુધી (વૈકલ્પિક)',names:['offerUntil']},
    {title:'સ્કીમની વિગત (વૈકલ્પિક)',names:['offerText']},
@@ -41,13 +39,17 @@
    const details=document.createElement('details');details.className='mg-form-step';details.dataset.step=String(index);
    const summary=document.createElement('summary');summary.textContent=cfg.title;summary.setAttribute('aria-label',cfg.title);
    const content=document.createElement('div');content.className='mg-form-step-content';
+   if(cfg.priceArea)details.classList.add('mg-form-step--price-area');
+   details.append(summary,content);
+   const first=group[0];grid.insertBefore(details,first);
+   group.forEach(n=>content.append(n));
+   const controls=group.flatMap(n=>n.matches?.('input,select,textarea')?[n]:[...n.querySelectorAll?.('input,select,textarea')||[]]);
+   /* Price/area is an optional disclosure, not an automatic wizard step. It stays closed until its summary is tapped. */
+   if(cfg.manual)return;
    const actions=document.createElement('div');actions.className='mg-step-actions';
    const back=document.createElement('button');back.type='button';back.className='mg-step-back';back.textContent='પાછળ જાઓ';
    const next=document.createElement('button');next.type='button';next.className='mg-step-next';next.textContent='આગળ વધો';
-   actions.append(back,next);content.append(actions);details.append(summary,content);
-   const first=group[0];grid.insertBefore(details,first);
-   group.forEach(n=>content.insertBefore(n,actions));
-   const controls=group.flatMap(n=>n.matches?.('input,select,textarea')?[n]:[...n.querySelectorAll?.('input,select,textarea')||[]]);
+   actions.append(back,next);content.append(actions);
    const step={details,controls,index:steps.length};steps.push(step);
    next.addEventListener('click',()=>advance(step,false));
    back.addEventListener('click',()=>{const prev=steps[step.index-1];if(prev){details.open=false;prev.details.open=true;focusFirst(prev);prev.details.scrollIntoView({behavior:'smooth',block:'center'});}});
@@ -70,7 +72,7 @@
   if(submit){submit.addEventListener('click',e=>{const bad=[...form.querySelectorAll('input,select,textarea')].find(c=>!c.disabled&&!c.checkValidity());if(bad){e.preventDefault();const target=steps.find(s=>s.details.contains(bad));if(target){steps.forEach(s=>s.details.open=s===target);bad.focus();}}},true);}
   form.addEventListener('reset',()=>setTimeout(()=>steps.forEach((s,i)=>s.details.open=i===0),0));
  };
- const style=document.createElement('style');style.textContent=`#propertyForm .mg-form-step{grid-column:1/-1;border:1px solid #d6bd7b;border-radius:12px;background:rgba(255,255,255,.045);overflow:hidden;margin:0 0 5px;min-width:0}#propertyForm .mg-form-step>summary{list-style:none;cursor:pointer;padding:14px 15px;font-weight:800;color:#fff0bd;display:flex;align-items:center;justify-content:space-between;gap:12px}#propertyForm .mg-form-step>summary::-webkit-details-marker{display:none}#propertyForm .mg-form-step>summary:after{content:'＋';font-size:18px;color:#ffdd00}#propertyForm .mg-form-step[open]>summary:after{content:'−'}#propertyForm .mg-form-step-content{padding:4px 12px 13px;display:grid;gap:10px;min-width:0}#propertyForm .mg-form-step-content>*{min-width:0}#propertyForm .mg-step-actions{display:flex;justify-content:space-between;gap:10px;grid-column:1/-1;order:99}#propertyForm .mg-step-next,#propertyForm .mg-step-back{border:0;border-radius:8px;padding:9px 15px;font-weight:800;cursor:pointer}#propertyForm .mg-step-next{margin-left:auto;background:linear-gradient(120deg,#ffdd00,#d6ad00);color:#173126}#propertyForm .mg-step-back{background:transparent;color:#e8d58b;border:1px solid #bda653}#propertyForm .mg-form-step-content>input,#propertyForm .mg-form-step-content>select,#propertyForm .mg-form-step-content>textarea{width:100%}#propertyForm .mg-form-step-content>label{display:block}#propertyForm .mg-form-step-content>div[style*="font-weight"]{grid-column:1/-1!important}#propertyForm .mg-form-step-content label input[type=file]{display:block;width:100%;margin-top:8px}@media(max-width:560px){#propertyForm .mg-form-step-content{padding-left:8px;padding-right:8px}}`;
+ const style=document.createElement('style');style.textContent=`#propertyForm .mg-form-step--price-area .mg-form-step-content{grid-template-columns:repeat(2,minmax(0,1fr))}#propertyForm .mg-form-step--price-area>summary{white-space:nowrap}#propertyForm .mg-form-step{grid-column:1/-1;border:1px solid #d6bd7b;border-radius:12px;background:rgba(255,255,255,.045);overflow:hidden;margin:0 0 5px;min-width:0}#propertyForm .mg-form-step>summary{list-style:none;cursor:pointer;padding:14px 15px;font-weight:800;color:#fff0bd;display:flex;align-items:center;justify-content:space-between;gap:12px}#propertyForm .mg-form-step>summary::-webkit-details-marker{display:none}#propertyForm .mg-form-step>summary:after{content:'＋';font-size:18px;color:#ffdd00}#propertyForm .mg-form-step[open]>summary:after{content:'−'}#propertyForm .mg-form-step-content{padding:4px 12px 13px;display:grid;gap:10px;min-width:0}#propertyForm .mg-form-step-content>*{min-width:0}#propertyForm .mg-step-actions{display:flex;justify-content:space-between;gap:10px;grid-column:1/-1;order:99}#propertyForm .mg-step-next,#propertyForm .mg-step-back{border:0;border-radius:8px;padding:9px 15px;font-weight:800;cursor:pointer}#propertyForm .mg-step-next{margin-left:auto;background:linear-gradient(120deg,#ffdd00,#d6ad00);color:#173126}#propertyForm .mg-step-back{background:transparent;color:#e8d58b;border:1px solid #bda653}#propertyForm .mg-form-step-content>input,#propertyForm .mg-form-step-content>select,#propertyForm .mg-form-step-content>textarea{width:100%}#propertyForm .mg-form-step-content>label{display:block}#propertyForm .mg-form-step-content>div[style*="font-weight"]{grid-column:1/-1!important}#propertyForm .mg-form-step-content label input[type=file]{display:block;width:100%;margin-top:8px}@media(max-width:560px){#propertyForm .mg-form-step-content{padding-left:8px;padding-right:8px}}`;
  document.head.appendChild(style);
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
