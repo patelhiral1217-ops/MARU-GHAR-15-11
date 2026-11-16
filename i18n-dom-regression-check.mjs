@@ -64,9 +64,13 @@ if(n.ownerText.nodeValue!=='માલિકનું નામ: ઘર')throw ne
 if(n.liveButtonText.nodeValue!=='Reject')throw new Error(`Live property action button was not translated: ${n.liveButtonText.nodeValue}`);
 if(n.cardButtonText.nodeValue!=='Refresh')throw new Error(`Admin card action button was not translated: ${n.cardButtonText.nodeValue}`);
 if(n.placeholder.getAttribute('placeholder')!=='City Name (Gujarati)')throw new Error(`Placeholder was not translated: ${n.placeholder.getAttribute('placeholder')}`);
+if(window.mgI18nText('ભાવ અને ક્ષેત્રફળ ઉમેરો')!=='Add Price & Area')throw new Error('Price/area disclosure label did not translate to English');
+if(window.mgI18nText('ખરીદદારો માટે')!=='For Buyers')throw new Error('Gujarati-only footer heading did not translate to English');
 change('hi');
+if(window.mgI18nText('ભાવ અને ક્ષેત્રફળ ઉમેરો')!=='कीमत और क्षेत्रफल जोड़ें')throw new Error('Price/area disclosure label did not translate to Hindi');
 if(n.navText.nodeValue!=='प्रॉपर्टी देखें')throw new Error(`Hindi switch failed: ${n.navText.nodeValue}`);
 change('gu');
+if(window.mgI18nText('ભાવ અને ક્ષેત્રફળ ઉમેરો')!=='ભાવ અને ક્ષેત્રફળ ઉમેરો')throw new Error('Price/area disclosure label did not restore Gujarati');
 if(dom.treeWalkerCalls!==initialTreeWalkerCalls)throw new Error('Language switching rescanned the full page instead of using cached translations');
 if(n.navText.nodeValue!=='પ્રોપર્ટી જુઓ')throw new Error(`Gujarati restore failed: ${n.navText.nodeValue}`);
 console.log('I18N DOM + SPEED REGRESSION PASS — Gujarati/Hindi/English switching uses cached text after the first scan; buttons/attributes translate and owner-entered content stays unchanged.');
