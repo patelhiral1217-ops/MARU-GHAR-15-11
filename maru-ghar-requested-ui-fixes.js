@@ -46,11 +46,11 @@
   tick();window.setInterval(tick,30000);window.addEventListener('mg-language-changed',tick);
  }
  function removeDuplicateAdminLogin(){
-  var links=$$('a[href*="admin.html"]');
+  $('button,a').forEach(function(el){var t=(el.textContent||'').trim().toLowerCase();if(/last updated|છેલ્લો સુધારો|अंतिम संशोधन/.test(t))el.remove()});\n  var links=$('a[href*="admin.html"]');
   var loginLinks=links.filter(function(a){return /admin|એડમિન|प्रशासन/i.test((a.textContent||'')+' '+a.getAttribute('href'))});
   var keep=$('#adminQuick')||loginLinks.find(function(a){return a.offsetParent!==null})||loginLinks[0];
   loginLinks.forEach(function(a){if(a!==keep)a.remove()});
-  if(keep){keep.classList.add('mg-admin-single');keep.textContent=lang()==='en'?'Admin Login':lang()==='hi'?'एडमिन लॉगिन':'એડમિન લોગિન';}
+  if(keep){keep.classList.add('mg-admin-single');keep.textContent=lang()==='en'?'Admin Login':lang()==='hi'?'एडमिन लॉगिन':'એડમિન લોગિન';window.addEventListener('mg-language-changed',function(){keep.textContent=lang()==='en'?'Admin Login':lang()==='hi'?'एडमिन लॉगिन':'એડમિન લોગિન'})}
  }
  function brandLoginDialog(){
   var shell=$('#mgLoginOverlay .mg-dialog');if(!shell||shell.dataset.mgBrandHeader==='1')return;
