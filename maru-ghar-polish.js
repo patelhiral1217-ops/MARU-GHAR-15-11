@@ -27,7 +27,7 @@
     if($('mgEmi'))return $('mgEmi');
     var panel=document.createElement('section');panel.id='mgEmi';panel.className='mg-emi';panel.hidden=true;
     panel.innerHTML=
-      '<div class="mg-emi-head"><div><span class="mg-emi-kicker">MARU GHAR · HOME FINANCE</span><h2>🧮 EMI કેલ્ક્યુલેટર</h2><p class="sub">ઘર ખરીદવા માટે લોનનો માસિક હપ્તો જાણો</p></div><button type="button" class="mg-emi-close" id="emiClose" aria-label="બંધ કરો">✕ બંધ કરો</button></div>'+
+      '<div class="mg-emi-head"><div><span class="mg-emi-kicker">મારું ઘર · ઘર લોન</span><h2>🧮 EMI કેલ્ક્યુલેટર</h2><p class="sub">ઘર ખરીદવા માટે લોનનો માસિક હપ્તો જાણો</p></div><button type="button" class="mg-emi-close" id="emiClose" aria-label="બંધ કરો">✕ બંધ કરો</button></div>'+
       '<div class="mg-emi-g"><label>લોનની રકમ (₹)<input id="emiP" type="number" inputmode="numeric" min="1" value="2500000"></label>'+
       '<label>વ્યાજ દર (% વાર્ષિક)<input id="emiR" type="number" inputmode="decimal" min="0" max="40" step="0.1" value="8.5"></label>'+
       '<label>સમયગાળો (વર્ષ)<input id="emiN" type="number" inputmode="numeric" min="1" max="40" value="20"></label></div>'+
