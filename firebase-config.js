@@ -9,6 +9,27 @@ export const firebaseConfig = {
   appId: "1:301612847347:web:2eb36de8d6495260fde786"
 };
 
+// Free persistent Firestore cache for offline reads and queued writes (browser/Android WebView).
+// The same helper is used by public, customer and admin pages so Firestore is initialized once.
+import { initializeFirestore, getFirestore, persistentLocalCache, persistentMultipleTabManager } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+let maruFirestoreInstance = null;
+export function getMaruFirestore(app) {
+  if (maruFirestoreInstance) return maruFirestoreInstance;
+  try {
+    maruFirestoreInstance = initializeFirestore(app, {
+      localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
+    });
+  } catch (error) {
+    // If another module already initialized Firestore, reuse that instance.
+    if (error?.code === 'failed-precondition' || error?.code === 'already-exists') {
+      maruFirestoreInstance = getFirestore(app);
+    } else {
+      throw error;
+    }
+  }
+  return maruFirestoreInstance;
+}
+
 // Cloudinary Console > Settings > Product environment credentials: Cloud name.
 // Unsigned upload preset must be exactly: marughar_images
 export const cloudinaryConfig = {
