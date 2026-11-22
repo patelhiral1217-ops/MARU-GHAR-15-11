@@ -2676,4 +2676,45 @@ window.MG_I18N_DICTIONARY={
  .mg-mobile-nav>a small{font-size:10px!important;white-space:nowrap!important}
 }
 </style>
+
+<style id="mg-bottom-nav-final-four-column-fix">
+/* Final mobile override: exactly four existing buttons, in one fixed row. */
+@media (max-width:600px){
+  nav.mg-mobile-nav{
+    display:grid!important;
+    position:fixed!important;
+    left:8px!important;right:8px!important;bottom:8px!important;
+    width:auto!important;max-width:none!important;min-width:0!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    grid-auto-flow:row!important;grid-auto-columns:auto!important;
+    grid-auto-rows:auto!important;
+    flex-wrap:nowrap!important;
+    gap:6px!important;
+    padding:7px 6px calc(7px + env(safe-area-inset-bottom))!important;
+    overflow:visible!important;
+    box-sizing:border-box!important;
+  }
+  nav.mg-mobile-nav>a{
+    display:flex!important;position:relative!important;
+    width:100%!important;min-width:0!important;max-width:none!important;
+    flex:0 1 auto!important;flex-direction:column!important;
+    flex-wrap:nowrap!important;align-items:center!important;justify-content:center!important;
+    gap:2px!important;padding:5px 1px!important;margin:0!important;
+    white-space:nowrap!important;overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+  nav.mg-mobile-nav>a>span{
+    display:block!important;flex:0 0 auto!important;
+    font-size:21px!important;line-height:1.05!important;
+  }
+  nav.mg-mobile-nav>a>small{
+    display:block!important;width:100%!important;min-width:0!important;
+    font-size:clamp(8px,2.5vw,10px)!important;line-height:1.2!important;
+    text-align:center!important;white-space:nowrap!important;
+    overflow:hidden!important;text-overflow:clip!important;
+  }
+  body{padding-bottom:82px!important}
+}
+</style>
+
 </body></html>
