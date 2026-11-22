@@ -1,6 +1,6 @@
-import { firebaseConfig, cloudinaryConfig, isFirebaseConfigured, isCloudinaryConfigured } from './firebase-config.js';
+import { firebaseConfig, cloudinaryConfig, isFirebaseConfigured, isCloudinaryConfigured, getMaruFirestore } from './firebase-config.js';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-import { getFirestore, collection, getDocs, getDoc, doc, query, where, orderBy, limit, startAfter, addDoc, setDoc, serverTimestamp, Timestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import { collection, getDocs, getDoc, doc, query, where, orderBy, limit, startAfter, addDoc, setDoc, serverTimestamp, Timestamp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 
 const form = document.getElementById('propertyForm');
@@ -282,7 +282,7 @@ async function init() {
     return;
   }
   try {
-    const app=initializeApp(firebaseConfig); db=getFirestore(app); auth=getAuth(app); liveMode=true;
+    const app=initializeApp(firebaseConfig); db=getMaruFirestore(app); auth=getAuth(app); liveMode=true;
     // Admin shortcut buttons exist in the page but stay hidden for everyone except the signed-in admin.
     onAuthStateChanged(auth,u=>{const ok=!!u&&!u.isAnonymous&&u.uid===ADMIN_UID;['adminNavLink','adminQuick'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.toggle('hidden',!ok)})});
     await loadCities();
