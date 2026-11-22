@@ -2,7 +2,7 @@
 import { firebaseConfig, getMaruFirestore } from './firebase-config.js';
 import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-import { collection, doc, getDocs, setDoc, addDoc, serverTimestamp, query, orderBy, limit, deleteDoc, where, updateDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import { collection, doc, getDocs, setDoc, addDoc, serverTimestamp, query, orderBy, limit, deleteDoc, where, updateDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-functions.js';
 (() => {
  'use strict';
@@ -16,7 +16,7 @@ import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/
  window.alert=m=>oldAlert(mgTr(m));window.confirm=m=>oldConfirm(mgTr(m));window.prompt=(m,v)=>oldPrompt(mgTr(m),v);
 
  if(!status)return;
- let app,auth,db,functions,currentUser=null;
+ let app,auth,db,functions,currentUser=null,notificationUnsub=null;
  const say=(m,bad=false)=>{status.textContent=mgTr(m);status.style.color=bad?'#b42318':'#536071'};
  // Keep guest and signed-in customer favourites separate on shared devices.
  const favKey=()=>currentUser&&!currentUser.isAnonymous?`mg_favs_user_${currentUser.uid}`:'mg_favs_guest';
@@ -104,8 +104,31 @@ import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/
  }
  async function deleteMyAccount(){if(!currentUser||currentUser.isAnonymous){say('પહેલાં લોગિન કરો.',true);return;}if(!confirm('તમારું એકાઉન્ટ, મનપસંદ યાદી, સૂચનાઓ અને પૂછપરછ કાયમ માટે ડિલીટ થશે. આગળ વધવું છે?'))return;try{const fn=httpsCallable(functions,'deleteMyAccount');await fn({});await signOut(auth);saveFavs([]);say('એકાઉન્ટ ડિલીટ થયું.');}catch(e){say('એકાઉન્ટ ડિલીટ થઈ શક્યું નથી: '+(e.code||e.message),true)}}
  async function loadNotifications(){
-   if(!currentUser||currentUser.isAnonymous)return;
-   try{const s=await getDocs(query(collection(db,'users',currentUser.uid,'notifications'),orderBy('createdAt','desc'),limit(10)));const box=$('customerNotifications');box.replaceChildren();if(s.empty)return;const h=document.createElement('b');h.textContent='🔔 ભાવ / એકાઉન્ટ સૂચનાઓ';box.append(h);s.docs.forEach(d=>{const x=d.data(),row=document.createElement('div');row.style.cssText='padding:9px 0;border-bottom:1px solid #ddd;display:flex;gap:8px;align-items:center;justify-content:space-between';const msg=document.createElement('span');msg.textContent=(x.read?'':'🔔 ')+(x.message||'નવી સૂચના');row.append(msg);if(!x.read){const b=document.createElement('button');b.type='button';b.textContent='વાંચી';b.style.cssText='padding:5px 9px;border:1px solid #c8a44f;border-radius:7px;background:#fff8e5;color:#333';b.addEventListener('click',async()=>{try{await updateDoc(doc(db,'users',currentUser.uid,'notifications',d.id),{read:true});await loadNotifications()}catch(e){say('સૂચના અપડેટ ન થઈ: '+(e.code||e.message),true)}});row.append(b)}box.append(row)});}catch(e){console.warn('notifications unavailable',e)}
+   if(notificationUnsub){notificationUnsub();notificationUnsub=null;}
+   const box=$('customerNotifications');
+   if(!currentUser||currentUser.isAnonymous){box.replaceChildren();return;}
+   const ref=query(collection(db,'users',currentUser.uid,'notifications'),orderBy('createdAt','desc'),limit(10));
+   notificationUnsub=onSnapshot(ref,s=>{
+     box.replaceChildren();
+     if(s.empty)return;
+     const h=document.createElement('b');h.textContent='🔔 ભાવ / એકાઉન્ટ સૂચનાઓ';box.append(h);
+     s.docs.forEach(d=>{
+       const x=d.data(),row=document.createElement('div');
+       row.style.cssText='padding:9px 0;border-bottom:1px solid #ddd;display:flex;gap:8px;align-items:center;justify-content:space-between';
+       const msg=document.createElement('span');msg.textContent=(x.read?'':'🔔 ')+(x.message||'નવી સૂચના');row.append(msg);
+       if(!x.read){
+         const b=document.createElement('button');b.type='button';b.textContent='વાંચી';
+         b.style.cssText='padding:5px 9px;border:1px solid #c8a44f;border-radius:7px;background:#fff8e5;color:#333';
+         b.addEventListener('click',async()=>{
+           b.disabled=true;
+           try{await updateDoc(doc(db,'users',currentUser.uid,'notifications',d.id),{read:true});}
+           catch(e){b.disabled=false;say('સૂચના અપડેટ ન થઈ: '+(e.code||e.message),true);}
+         });
+         row.append(b);
+       }
+       box.append(row);
+     });
+   },e=>{console.warn('notifications unavailable',e);box.textContent='સૂચનાઓ લોડ થઈ શકી નથી. ઇન્ટરનેટ તપાસીને ફરી લોગિન કરો.';});
  }
  async function init(){
    try{app=getApps()[0]||initializeApp(firebaseConfig);auth=getAuth(app);db=getMaruFirestore(app);functions=getFunctions(app);}
