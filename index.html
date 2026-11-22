@@ -2666,4 +2666,49 @@ window.MG_I18N_DICTIONARY={
   }
 }
 </style>
+
+<style id="mg-bottom-nav-force-single-row-v2">
+@media (max-width:600px){
+  nav.mg-mobile-nav{
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    align-items:stretch!important;
+    justify-content:space-between!important;
+    width:auto!important;
+    max-width:none!important;
+    min-width:0!important;
+    left:7px!important;right:7px!important;
+    gap:3px!important;
+    overflow:hidden!important;
+  }
+  nav.mg-mobile-nav > a{
+    display:flex!important;
+    flex:1 1 0!important;
+    flex-grow:1!important;
+    flex-shrink:1!important;
+    flex-basis:0!important;
+    width:20%!important;
+    min-width:0!important;
+    max-width:20%!important;
+    margin:0!important;
+    padding:4px 0!important;
+    flex-direction:column!important;
+    flex-wrap:nowrap!important;
+    align-items:center!important;
+    justify-content:center!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+  }
+  nav.mg-mobile-nav > a > span,
+  nav.mg-mobile-nav > a > small{
+    display:block!important;
+    flex:0 0 auto!important;
+    white-space:nowrap!important;
+    max-width:100%!important;
+    text-align:center!important;
+  }
+  nav.mg-mobile-nav > a > small{font-size:clamp(7px,2.3vw,10px)!important;line-height:1.15!important}
+}
+</style>
 </body></html>
