@@ -84,16 +84,16 @@ button:active,.primary:active,.approve:active,.reject:active{transform:translate
 <section class="panel"><div class="row" style="justify-content:space-between;align-items:center"><div><h2 style="margin:0">પ્રોપર્ટી મેનેજમેન્ટ</h2><p class="muted">લિસ્ટિંગ જૂથોમાં લોડ થશે; જૂની લિસ્ટિંગ માટે “વધુ જૂની લિસ્ટિંગ લોડ કરો” દબાવો.</p></div><div class="row"><select id="statusFilter" class="filter" aria-label="સ્થિતિ પ્રમાણે ફિલ્ટર"><option value="all">બધી સ્થિતિ</option><option value="pending">પેન્ડિંગ</option><option value="approved">જાહેર / મંજૂર</option><option value="rejected">નામંજૂર</option></select><button id="refresh" class="primary">ફરી લોડ કરો</button><button id="logout">લોગઆઉટ</button></div></div><div id="listings"></div><div style="display:flex;justify-content:center;margin:16px 0"><button id="loadOlder" class="primary" type="button" hidden>વધુ જૂની લિસ્ટિંગ લોડ કરો</button></div><div id="dashStatus" class="status" role="status"></div></section></section></div>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script type="module">
-import { firebaseConfig, cloudinaryConfig, isFirebaseConfigured, isCloudinaryConfigured } from './firebase-config.js';
+import { firebaseConfig, cloudinaryConfig, isFirebaseConfigured, isCloudinaryConfigured, getMaruFirestore } from './firebase-config.js';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-import { getFirestore, collection, getDocs, query, orderBy, limit, startAfter, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, onSnapshot, where, setDoc, getDoc, deleteField, writeBatch } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import { collection, getDocs, query, orderBy, limit, startAfter, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, onSnapshot, where, setDoc, getDoc, deleteField, writeBatch } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-functions.js';
 const ADMIN_UID='yJYiuaUE3KXVLVuWqLyLRH5owQJ3';
 function mgIsTrustedMapsUrl(value){try{const u=new URL(String(value||''));const h=u.hostname.toLowerCase();return u.protocol==='https:'&&(['google.com','www.google.com','maps.google.com','maps.app.goo.gl','goo.gl'].includes(h))&&((h==='google.com'||h==='www.google.com')?u.pathname.startsWith('/maps'):h==='goo.gl'?u.pathname.startsWith('/maps'):true)}catch(_){return false}}
 const $=id=>document.getElementById(id); const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 if(!isFirebaseConfigured()){ $('loginStatus').textContent='Firebase config અધૂરી છે.'; $('loginForm').querySelector('button').disabled=true; }
-const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getMaruFirestore(app);
 async function mgDestroyMedia(items){try{const list=(items||[]).filter(x=>x&&x.publicId).map(x=>({publicId:String(x.publicId),type:/\/video\/upload\//.test(x.url||'')?'video':'image'}));if(!list.length)return;await httpsCallable(getFunctions(app),'deleteListingMedia')({items:list})}catch(e){console.warn('Cloudinary cleanup skipped',e)}} let allListings=[], lastAdminDoc=null, moreAdmin=true, loadingAdmin=false; const ADMIN_PAGE_SIZE=100;
 $('loginForm').addEventListener('submit',async e=>{e.preventDefault();$('loginStatus').textContent='લોગિન ચકાસાઈ રહ્યો છે…';try{await signInWithEmailAndPassword(auth,$('email').value.trim(),$('password').value)}catch(err){$('loginStatus').textContent='લોગિન નિષ્ફળ. ઈમેલ/પાસવર્ડ તપાસો.';console.error(err)}});
 onAuthStateChanged(auth,async user=>{
