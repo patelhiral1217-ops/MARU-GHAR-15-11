@@ -14,7 +14,7 @@
   },
   "scripts": {
     "copy-web": "node copy-web.mjs",
-    "test": "npm run copy-web && node maru-ghar-layout-fixes-check.mjs && node maru-ghar-24-upgrades-check.mjs && node smoke-check.mjs && node ui-regression-check.mjs && node discovery-upgrades-check.mjs && node customer-auth-check.mjs && node final-firestore-rules-check.mjs && node i18n-check.mjs && node i18n-coverage-check.mjs && node i18n-dom-regression-check.mjs && node maps-whatsapp-check.mjs && node notifications-audit-check.mjs && node verification-audit-check.mjs && node hosting-preflight.mjs && node firebase-deploy-preflight.mjs && node home-tools-restored-check.mjs && node offline-persistence-check.mjs && node customer-notification-live-check.mjs"
+    "test": "npm run copy-web && node maru-ghar-layout-fixes-check.mjs && node maru-ghar-24-upgrades-check.mjs && node smoke-check.mjs && node ui-regression-check.mjs && node discovery-upgrades-check.mjs && node customer-auth-check.mjs && node final-firestore-rules-check.mjs && node i18n-check.mjs && node i18n-coverage-check.mjs && node i18n-dom-regression-check.mjs && node maps-whatsapp-check.mjs && node notifications-audit-check.mjs && node verification-audit-check.mjs && node hosting-preflight.mjs && node firebase-deploy-preflight.mjs && node home-tools-restored-check.mjs && node offline-persistence-check.mjs && node customer-notification-live-check.mjs && node backup-restore-audit-check.mjs"
   },
   "devDependencies": {
     "@capacitor/cli": "^6.2.0"
