@@ -1,8 +1,8 @@
 /* Maru Ghar Premium customer account extension. */
-import { firebaseConfig } from './firebase-config.js';
+import { firebaseConfig, getMaruFirestore } from './firebase-config.js';
 import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
-import { getFirestore, collection, doc, getDocs, setDoc, addDoc, serverTimestamp, query, orderBy, limit, deleteDoc, where, updateDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+import { collection, doc, getDocs, setDoc, addDoc, serverTimestamp, query, orderBy, limit, deleteDoc, where, updateDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-functions.js';
 (() => {
  'use strict';
@@ -108,7 +108,7 @@ import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/
    try{const s=await getDocs(query(collection(db,'users',currentUser.uid,'notifications'),orderBy('createdAt','desc'),limit(10)));const box=$('customerNotifications');box.replaceChildren();if(s.empty)return;const h=document.createElement('b');h.textContent='🔔 ભાવ / એકાઉન્ટ સૂચનાઓ';box.append(h);s.docs.forEach(d=>{const x=d.data(),row=document.createElement('div');row.style.cssText='padding:9px 0;border-bottom:1px solid #ddd;display:flex;gap:8px;align-items:center;justify-content:space-between';const msg=document.createElement('span');msg.textContent=(x.read?'':'🔔 ')+(x.message||'નવી સૂચના');row.append(msg);if(!x.read){const b=document.createElement('button');b.type='button';b.textContent='વાંચી';b.style.cssText='padding:5px 9px;border:1px solid #c8a44f;border-radius:7px;background:#fff8e5;color:#333';b.addEventListener('click',async()=>{try{await updateDoc(doc(db,'users',currentUser.uid,'notifications',d.id),{read:true});await loadNotifications()}catch(e){say('સૂચના અપડેટ ન થઈ: '+(e.code||e.message),true)}});row.append(b)}box.append(row)});}catch(e){console.warn('notifications unavailable',e)}
  }
  async function init(){
-   try{app=getApps()[0]||initializeApp(firebaseConfig);auth=getAuth(app);db=getFirestore(app);functions=getFunctions(app);}
+   try{app=getApps()[0]||initializeApp(firebaseConfig);auth=getAuth(app);db=getMaruFirestore(app);functions=getFunctions(app);}
    catch(e){say('Firebase જોડાણ ઉપલબ્ધ નથી. '+(e.message||''),true);return;}
    $('customerRegister').addEventListener('click',async()=>{const email=$('customerEmail').value.trim(),password=$('customerPassword').value,name=$('customerDisplayName')?.value.trim()||'',phone=$('customerMobile')?.value.trim()||'';if(name.length<2||!/^[0-9+() -]{10,16}$/.test(phone)){say('એકાઉન્ટ બનાવવા માટે નામ અને યોગ્ય મોબાઇલ નંબર લખો.',true);return;}if(password.length<6){say('પાસવર્ડ ઓછામાં ઓછા 6 અક્ષરનો હોવો જોઈએ.',true);return;}try{await createUserWithEmailAndPassword(auth,email,password);await setDoc(doc(db,'users',auth.currentUser.uid),{displayName:name,phone:phone,createdAt:serverTimestamp(),updatedAt:serverTimestamp()},{merge:true});say('એકાઉન્ટ સફળતાપૂર્વક બન્યું.');}catch(e){say('એકાઉન્ટ બની શક્યું નથી: '+(e.code||e.message),true)}});
    $('customerLogin').addEventListener('click',async()=>{try{await signInWithEmailAndPassword(auth,$('customerEmail').value.trim(),$('customerPassword').value);const name=$('customerDisplayName')?.value.trim()||'',phone=$('customerMobile')?.value.trim()||'';if(name||phone){if(name.length<2||!/^[0-9+() -]{10,16}$/.test(phone))throw new Error('નામ અને યોગ્ય મોબાઇલ નંબર બંને લખો.');await setDoc(doc(db,'users',auth.currentUser.uid),{displayName:name,phone:phone,updatedAt:serverTimestamp()},{merge:true});}say('લોગિન સફળ.');}catch(e){say('લોગિન નિષ્ફળ: '+(e.code||e.message),true)}});
