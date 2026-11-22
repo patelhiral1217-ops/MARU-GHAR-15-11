@@ -144,7 +144,7 @@ import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/
      currentUser=u; window.mgCustomerUser=u||null; document.dispatchEvent(new CustomEvent('marughar:customer-auth',{detail:{user:u||null}}));
      $('customerLogout').classList.toggle('hidden',!u||u.isAnonymous);$('customerExport').classList.toggle('hidden',!u||u.isAnonymous);$('customerDelete').classList.toggle('hidden',!u||u.isAnonymous);if($('customerRestore'))$('customerRestore').classList.toggle('hidden',!u||u.isAnonymous);$('customerRegister').classList.toggle('hidden',!!u&&!u.isAnonymous);$('customerLogin').classList.toggle('hidden',!!u&&!u.isAnonymous);
      if(u&&!u.isAnonymous){say('લોગિન: '+(u.email||'ગ્રાહક'));try{await refreshFavs();await loadNotifications();await loadMyProperties()}catch(e){say('એકાઉન્ટ ડેટા લોડ ન થયું: '+(e.code||e.message),true)}}
-     else {showActiveFavs();$('customerFavList').textContent='લોગિન કર્યા પછી મનપસંદ પ્રોપર્ટી Sync થશે.';if($('customerMyPropertiesList'))$('customerMyPropertiesList').textContent=mgTr('મારી પ્રોપર્ટી જોવા માટે ગ્રાહક એકાઉન્ટમાં લોગિન કરો.');document.dispatchEvent(new CustomEvent('marughar:favorites-updated'))}
+     else {await loadNotifications();showActiveFavs();$('customerFavList').textContent='લોગિન કર્યા પછી મનપસંદ પ્રોપર્ટી Sync થશે.';if($('customerMyPropertiesList'))$('customerMyPropertiesList').textContent=mgTr('મારી પ્રોપર્ટી જોવા માટે ગ્રાહક એકાઉન્ટમાં લોગિન કરો.');document.dispatchEvent(new CustomEvent('marughar:favorites-updated'))}
    });
  }
  init();
