@@ -1,0 +1,47 @@
+name: Maru Ghar Android Debug APK
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  android-debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Install project dependencies
+        run: npm install --ignore-scripts
+      - name: Build web assets
+        run: npm run copy-web
+      - name: Generate Android project if missing
+        run: |
+          if [ ! -d android ]; then npx cap add android; fi
+      - name: Sync Capacitor plugins and web assets
+        run: npx cap sync android
+      - name: Configure Firebase Messaging for Android
+        run: |
+          test -f google-services.json
+          cp google-services.json android/app/google-services.json
+          grep -q "com.google.gms.google-services" android/build.gradle || sed -i "/dependencies {/a\\        classpath 'com.google.gms:google-services:4.4.2'" android/build.gradle
+          grep -q "com.google.gms.google-services" android/app/build.gradle || sed -i "/apply plugin: 'com.android.application'/a\\apply plugin: 'com.google.gms.google-services'" android/app/build.gradle
+      - name: Build debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: MARU-GHAR-ANDROID-DEBUG-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
