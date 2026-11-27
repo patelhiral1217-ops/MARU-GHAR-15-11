@@ -12,6 +12,13 @@ assert.match(script,/linear-gradient\(145deg,#e8eee6/,'large white panels use co
 assert.match(index,/＋ ભાવ અને વધુ ફિલ્ટર ખોલો/,'Gujarati filter toggle phrase is translated');
 assert.match(index,/View Properties/,'English interface labels are present');
 assert.match(index,/प्रॉपर्टी देखें/,'Hindi interface labels are present');
+assert.match(index,/mg-mobile-header-overlap-fix/,'mobile header uses a dedicated no-overlap layout');
+assert.match(index,/header \.brand\{grid-column:1\/-1!important/,'mobile logo receives a full row');
+assert.doesNotMatch(index,/id="adminQuick"[^>]*style="display:inline-flex!important/,'duplicate header admin login is not forced visible');
+const footer=index.slice(index.indexOf('<footer id="contact"'));
+assert.doesNotMatch(footer,/data-mg-open="login"/,'duplicate footer customer login is removed');
+assert.doesNotMatch(footer,/data-mg-open="settings"/,'duplicate footer settings action is removed');
+assert.match(index,/scan\(document\.body\);\s*apply\(\);/,'language switch rescans late-rendered labels before repainting');
 assert.match(copy,/maru-ghar-layout-fixes\.js/,'hosting build copies the layout fix script');
 assert.match(copy,/Hosting build missing required file/,'hosting preflight validates required files');
 console.log('LAYOUT POLISH CHECK PASS — logo, one-line navigation, collapsed filters, coordinated colors and multilingual labels.');
