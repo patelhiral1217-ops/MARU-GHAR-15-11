@@ -15,7 +15,9 @@ assert.match(index,/प्रॉपर्टी देखें/,'Hindi interfac
 assert.match(index,/mg-mobile-header-overlap-fix/,'mobile header uses a dedicated no-overlap layout');
 assert.match(index,/header \.brand\{grid-column:1\/-1!important/,'mobile logo receives a full row');
 assert.doesNotMatch(index,/id="adminQuick"[^>]*style="display:inline-flex!important/,'duplicate header admin login is not forced visible');
-const footer=index.slice(index.indexOf('<footer id="contact"'));
+const footerStart=index.indexOf('<footer id="contact"');
+const footerEnd=index.indexOf('</footer>',footerStart);
+const footer=index.slice(footerStart,footerEnd);
 assert.doesNotMatch(footer,/data-mg-open="login"/,'duplicate footer customer login is removed');
 assert.doesNotMatch(footer,/data-mg-open="settings"/,'duplicate footer settings action is removed');
 assert.match(index,/scan\(document\.body\);\s*apply\(\);/,'language switch rescans late-rendered labels before repainting');
