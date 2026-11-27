@@ -41,7 +41,7 @@ jobs:
           npm audit --audit-level=low
           npm audit --prefix functions --audit-level=low
       - name: Compile Firestore rules in the Firebase emulator
-        run: npx --yes firebase-tools@latest emulators:exec --only firestore --project maru-ghar-gandhinagar-8dbe4 "echo Firestore rules compiled successfully"
+        run: npx --yes firebase-tools@latest emulators:exec --only firestore --project maru-ghar-gandhinagar-8dbe4 "node firestore-rules-compile-check.mjs"
       - name: Commit non-breaking lockfile security updates to PR branch
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         shell: bash
