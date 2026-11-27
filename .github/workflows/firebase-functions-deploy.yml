@@ -11,7 +11,30 @@ on:
 permissions:
   contents: read
 jobs:
-  deploy-functions-rules:
+  deploy-firestore-rules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare Firebase service account
+        shell: bash
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "FIREBASE_SERVICE_ACCOUNT repository secret is missing."
+            exit 1
+          fi
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
+          chmod 600 "$RUNNER_TEMP/firebase-service-account.json"
+      - name: Deploy Firestore rules only
+        uses: w9jds/firebase-action@v13.29.0
+        with:
+          args: deploy --only firestore:rules --project maru-ghar-gandhinagar-8dbe4
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebase-service-account.json
+
+  deploy-cloud-functions:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,9 +54,9 @@ jobs:
           fi
           printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
           chmod 600 "$RUNNER_TEMP/firebase-service-account.json"
-      - name: Deploy Firestore rules and Cloud Functions
+      - name: Deploy Cloud Functions (requires Firebase Blaze plan)
         uses: w9jds/firebase-action@v13.29.0
         with:
-          args: deploy --only firestore:rules,functions --project maru-ghar-gandhinagar-8dbe4
+          args: deploy --only functions --project maru-ghar-gandhinagar-8dbe4
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebase-service-account.json
