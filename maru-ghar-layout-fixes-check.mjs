@@ -20,7 +20,7 @@ const footerEnd=index.indexOf('</footer>',footerStart);
 const footer=index.slice(footerStart,footerEnd);
 assert.doesNotMatch(footer,/data-mg-open="login"/,'duplicate footer customer login is removed');
 assert.doesNotMatch(footer,/data-mg-open="settings"/,'duplicate footer settings action is removed');
-assert.match(index,/scan\(document\.body\);\s*apply\(\);/,'language switch rescans late-rendered labels before repainting');
+assert.match(index,/apply\(\);\s*if\(!unchanged\)window\.dispatchEvent/,'language switch refreshes the cached language state without full-page rescans');
 assert.match(copy,/maru-ghar-layout-fixes\.js/,'hosting build copies the layout fix script');
 assert.match(copy,/Hosting build missing required file/,'hosting preflight validates required files');
 console.log('LAYOUT POLISH CHECK PASS — logo, one-line navigation, collapsed filters, coordinated colors and multilingual labels.');
