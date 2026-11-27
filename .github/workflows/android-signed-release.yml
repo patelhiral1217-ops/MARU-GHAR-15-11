@@ -1,0 +1,90 @@
+name: Maru Ghar Signed Android Release
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  signed-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Check signing secrets
+        shell: bash
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+        run: |
+          test -n "$KEYSTORE_B64" || (echo "Missing ANDROID_KEYSTORE_BASE64" && exit 1)
+          test -n "$KEY_ALIAS" || (echo "Missing ANDROID_KEY_ALIAS" && exit 1)
+          test -n "$KEY_PASSWORD" || (echo "Missing ANDROID_KEY_PASSWORD" && exit 1)
+          test -n "$STORE_PASSWORD" || (echo "Missing ANDROID_STORE_PASSWORD" && exit 1)
+      - name: Install dependencies and build web assets
+        run: |
+          npm install --ignore-scripts
+          npm run copy-web
+      - name: Generate Android project if missing
+        run: |
+          if [ ! -d android ]; then npx cap add android; fi
+          npx cap sync android
+      - name: Configure release signing
+        shell: bash
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+        run: |
+          echo "$KEYSTORE_B64" | base64 --decode > "$RUNNER_TEMP/maru-ghar-release.jks"
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("android/app/build.gradle")
+          s = p.read_text()
+          if "signingConfigs {" not in s:
+              marker = "    buildTypes {"
+              if marker not in s:
+                  raise SystemExit("Could not find Android buildTypes block; refusing unsafe signing edit.")
+              signing = """    signingConfigs {
+                  release {
+                      storeFile file(System.getenv('MG_KEYSTORE_PATH'))
+                      storePassword System.getenv('MG_STORE_PASSWORD')
+                      keyAlias System.getenv('MG_KEY_ALIAS')
+                      keyPassword System.getenv('MG_KEY_PASSWORD')
+                  }
+              }
+          """
+              s = s.replace(marker, signing + marker, 1)
+          marker = "        release {"
+          if marker not in s:
+              raise SystemExit("Could not find release buildType; refusing unsafe signing edit.")
+          if "signingConfig signingConfigs.release" not in s:
+              s = s.replace(marker, marker + "\n            signingConfig signingConfigs.release", 1)
+          p.write_text(s)
+          PY
+        env:
+          MG_KEYSTORE_PATH: ${{ runner.temp }}/maru-ghar-release.jks
+          MG_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          MG_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          MG_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+      - name: Build signed APK and Play Store AAB
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease bundleRelease
+      - name: Upload signed release outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: MARU-GHAR-SIGNED-RELEASE
+          path: |
+            android/app/build/outputs/apk/release/*.apk
+            android/app/build/outputs/bundle/release/*.aab
+          if-no-files-found: error
+          retention-days: 14
