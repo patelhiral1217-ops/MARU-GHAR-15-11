@@ -269,9 +269,13 @@
     const s=getSelect();
     const unchanged=appliedLanguage===value;
     if(s)s.value=value;
+    ['mgLanguage','mgAdminLanguage'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=value;});
     try{localStorage.setItem('mg_language',value);}catch(_){}
-    if(unchanged)return true;
-    apply();window.dispatchEvent(new Event('mg-language-changed'));return true;
+    // Re-scan once at each explicit language selection so late-rendered labels are included.
+    scan(document.body);
+    apply();
+    if(!unchanged)window.dispatchEvent(new Event('mg-language-changed'));
+    return true;
   };
   const select=getSelect();
   if(select){
