@@ -271,8 +271,7 @@
     if(s)s.value=value;
     ['mgLanguage','mgAdminLanguage'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=value;});
     try{localStorage.setItem('mg_language',value);}catch(_){}
-    // Re-scan once at each explicit language selection so late-rendered labels are included.
-    scan(document.body);
+    // Repaint cached labels even when the selected language is unchanged.
     apply();
     if(!unchanged)window.dispatchEvent(new Event('mg-language-changed'));
     return true;
