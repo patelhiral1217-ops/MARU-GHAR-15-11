@@ -4,6 +4,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+permissions:
+  contents: write
 jobs:
   checks:
     runs-on: ubuntu-latest
@@ -14,9 +16,16 @@ jobs:
           node-version: 22
       - name: Install root dependencies
         run: npm install --ignore-scripts
+      - name: Install Functions dependencies
+        run: npm install --prefix functions --ignore-scripts
+      - name: Apply non-breaking dependency security fixes
+        shell: bash
+        run: |
+          npm audit fix --ignore-scripts || true
+          npm audit fix --prefix functions --ignore-scripts || true
       - name: Run Hosting build and all static/regression checks
         run: npm test
-      - name: Report dependency security audit
+      - name: Report remaining dependency security advisories
         shell: bash
         run: |
           npm audit --json > /tmp/root-audit.json || true
@@ -24,8 +33,22 @@ jobs:
           node -e "for (const f of ['/tmp/root-audit.json','/tmp/functions-audit.json']) { const j=require(f); console.log(f, JSON.stringify(j.metadata?.vulnerabilities || {})); for (const [name,v] of Object.entries(j.vulnerabilities || {})) console.log(name, v.severity, 'fixAvailable=', JSON.stringify(v.fixAvailable)); }"
       - name: Compile Firestore rules in the Firebase emulator
         run: npx --yes firebase-tools@latest emulators:exec --only firestore --project maru-ghar-gandhinagar-8dbe4 "echo Firestore rules compiled successfully"
-      - name: Install Functions dependencies and verify package
-        run: npm install --prefix functions --ignore-scripts
+      - name: Commit non-breaking lockfile security updates to PR branch
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
+        run: |
+          git add -f package-lock.json functions/package-lock.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Apply non-breaking dependency security updates"
+            git push origin "HEAD:$BRANCH_NAME"
+          else
+            echo "No lockfile changes to commit."
+          fi
       - name: Package complete project source
         if: success()
         run: |
