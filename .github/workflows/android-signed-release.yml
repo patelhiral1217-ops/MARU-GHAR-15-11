@@ -39,9 +39,10 @@ jobs:
         shell: bash
         env:
           KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-          STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          MG_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          MG_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          MG_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          MG_KEYSTORE_PATH: ${{ runner.temp }}/maru-ghar-release.jks
         run: |
           echo "$KEYSTORE_B64" | base64 --decode > "$RUNNER_TEMP/maru-ghar-release.jks"
           python3 - <<'PY'
@@ -69,11 +70,6 @@ jobs:
               s = s.replace(marker, marker + "\n            signingConfig signingConfigs.release", 1)
           p.write_text(s)
           PY
-        env:
-          MG_KEYSTORE_PATH: ${{ runner.temp }}/maru-ghar-release.jks
-          MG_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          MG_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-          MG_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
       - name: Build signed APK and Play Store AAB
         run: |
           cd android
