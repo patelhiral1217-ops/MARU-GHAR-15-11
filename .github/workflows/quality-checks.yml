@@ -16,6 +16,8 @@ jobs:
         run: npm install --ignore-scripts
       - name: Run Hosting build and all static/regression checks
         run: npm test
+      - name: Compile Firestore rules in the Firebase emulator
+        run: npx --yes firebase-tools@latest emulators:exec --only firestore --project maru-ghar-gandhinagar-8dbe4 "echo Firestore rules compiled successfully"
       - name: Install Functions dependencies and verify package
         run: npm install --prefix functions --ignore-scripts
       - name: Package complete project source
