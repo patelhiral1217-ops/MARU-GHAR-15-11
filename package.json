@@ -8,15 +8,15 @@
   "dependencies": {
     "firebase-admin": "^14.5.1",
     "firebase-functions": "^7.4.0",
-    "@capacitor/core": "^7.6.11",
-    "@capacitor/android": "^7.6.11",
-    "@capacitor/push-notifications": "^7.0.7"
+    "@capacitor/core": "^8.6.3",
+    "@capacitor/android": "^8.6.3",
+    "@capacitor/push-notifications": "^8.1.3"
   },
   "scripts": {
     "copy-web": "node copy-web.mjs",
     "test": "npm run copy-web && node maru-ghar-layout-fixes-check.mjs && node maru-ghar-24-upgrades-check.mjs && node smoke-check.mjs && node ui-regression-check.mjs && node discovery-upgrades-check.mjs && node customer-auth-check.mjs && node final-firestore-rules-check.mjs && node i18n-check.mjs && node i18n-coverage-check.mjs && node i18n-dom-regression-check.mjs && node maps-whatsapp-check.mjs && node notifications-audit-check.mjs && node verification-audit-check.mjs && node hosting-preflight.mjs && node firebase-deploy-preflight.mjs && node home-tools-restored-check.mjs && node offline-persistence-check.mjs && node customer-notification-live-check.mjs && node backup-restore-audit-check.mjs"
   },
   "devDependencies": {
-    "@capacitor/cli": "^7.6.11"
+    "@capacitor/cli": "^8.6.3"
   }
 }
