@@ -279,9 +279,10 @@ service cloud.firestore {
         && request.resource.data.displayName.size() >= 2
         && request.resource.data.displayName.size() <= 80
         && request.resource.data.phone is string
-        && request.resource.data.phone.matches('^[0-9+() -]{10,16}
-    // Normal sync writes createdAt; backup restore writes restoredAt.
-    // ---------------------------------------------------------
+        && request.resource.data.phone.matches('^[0-9+() -]{10,16}$');
+      allow delete: if isAdmin() || (request.auth != null && request.auth.uid == uid);
+    }
+
     match /users/{uid}/favorites/{listingId} {
       allow read, delete: if request.auth != null && request.auth.uid == uid;
       allow create, update: if request.auth != null
@@ -371,99 +372,3 @@ service cloud.firestore {
     }
   }
 });
-      allow delete: if isAdmin() || (request.auth != null && request.auth.uid == uid);
-    }
-
-    // ---------------------------------------------------------
-    // 9. CUSTOMER FAVOURITES
-    // Normal sync writes createdAt; backup restore writes restoredAt.
-    // ---------------------------------------------------------
-    match /users/{uid}/favorites/{listingId} {
-      allow read, delete: if request.auth != null && request.auth.uid == uid;
-      allow create, update: if request.auth != null
-        && request.auth.uid == uid
-        && request.resource.data.keys().hasOnly(['listingId', 'createdAt', 'restoredAt'])
-        && request.resource.data.listingId == listingId
-        && (
-          (('createdAt' in request.resource.data) && request.resource.data.createdAt is timestamp)
-          || (('restoredAt' in request.resource.data) && request.resource.data.restoredAt is timestamp)
-        );
-    }
-
-    // ---------------------------------------------------------
-    // 9. CUSTOMER NOTIFICATIONS
-    // Created only by trusted Cloud Functions Admin SDK.
-    // ---------------------------------------------------------
-    match /users/{uid}/notifications/{notificationId} {
-      allow read: if request.auth != null && request.auth.uid == uid;
-      allow create, delete: if false;
-      allow update: if request.auth != null
-        && request.auth.uid == uid
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read'])
-        && request.resource.data.read is bool;
-    }
-
-    // ---------------------------------------------------------
-    // 10. CUSTOMER ENQUIRIES
-    // ---------------------------------------------------------
-    match /enquiries/{enquiryId} {
-      allow create: if isRegisteredCustomer()
-        && request.resource.data.keys().hasOnly([
-          'uid', 'listingId', 'listingTitle', 'customerName',
-          'customerPhone', 'message', 'status', 'createdAt'
-        ])
-        && request.resource.data.uid == request.auth.uid
-        && request.resource.data.listingId is string
-        && request.resource.data.listingId.size() <= 100
-        && request.resource.data.listingTitle is string
-        && request.resource.data.listingTitle.size() <= 120
-        && request.resource.data.customerName is string
-        && request.resource.data.customerName.size() >= 2
-        && request.resource.data.customerName.size() <= 80
-        && request.resource.data.customerPhone is string
-        && request.resource.data.customerPhone.matches('^[0-9+() -]{10,16}$')
-        && request.resource.data.message is string
-        && request.resource.data.message.size() <= 500
-        && request.resource.data.status == 'pending'
-        && request.resource.data.createdAt == request.time;
-      allow read: if isAdmin()
-        || (request.auth != null && resource.data.uid == request.auth.uid);
-      allow update, delete: if isAdmin();
-    }
-
-    // ---------------------------------------------------------
-    // 11. ADMIN DIAGNOSTIC LOGS
-    // ---------------------------------------------------------
-    match /adminLogs/{logId} {
-      allow read, create, update, delete: if isAdmin();
-    }
-
-    // ---------------------------------------------------------
-    // 12. IMMUTABLE PROPERTY VERIFICATION AUDIT
-    // Admin confirms documents manually; records cannot be changed/deleted.
-    // ---------------------------------------------------------
-    match /listingVerifications/{verificationId} {
-      allow read: if isAdmin();
-      allow create: if isAdmin()
-        && request.resource.data.keys().hasOnly(['listingId', 'action', 'note', 'checkedBy', 'checkedAt'])
-        && request.resource.data.keys().hasAll(['listingId', 'action', 'note', 'checkedBy', 'checkedAt'])
-        && request.resource.data.listingId is string
-        && request.resource.data.listingId.size() >= 1
-        && request.resource.data.listingId.size() <= 128
-        && request.resource.data.action in ['verified', 'unverified']
-        && request.resource.data.note is string
-        && request.resource.data.note.size() <= 500
-        && (request.resource.data.action != 'verified' || request.resource.data.note.size() >= 8)
-        && request.resource.data.checkedBy == request.auth.uid
-        && request.resource.data.checkedAt == request.time;
-      allow update, delete: if false;
-    }
-
-    // ---------------------------------------------------------
-    // 13. ADMIN PUSH TOKENS
-    // ---------------------------------------------------------
-    match /adminTokens/{token} {
-      allow read, write: if isAdmin();
-    }
-  }
-}

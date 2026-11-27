@@ -4,6 +4,11 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+permissions:
+  contents: write
+concurrency:
+  group: maru-ghar-quality-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   checks:
     runs-on: ubuntu-latest
@@ -14,10 +19,51 @@ jobs:
           node-version: 22
       - name: Install root dependencies
         run: npm install --ignore-scripts
+      - name: Install Functions dependencies
+        run: npm install --prefix functions --ignore-scripts
+      - name: Check Cloud Functions JavaScript syntax
+        run: node --check functions/index.js
+      - name: Apply non-breaking dependency security fixes
+        shell: bash
+        run: |
+          npm audit fix --ignore-scripts || true
+          npm audit fix --prefix functions --ignore-scripts || true
       - name: Run Hosting build and all static/regression checks
         run: npm test
-      - name: Install Functions dependencies and verify package
-        run: npm install --prefix functions --ignore-scripts
+      - name: Report remaining dependency security advisories
+        shell: bash
+        run: |
+          npm audit --json > /tmp/root-audit.json || true
+          npm audit --prefix functions --json > /tmp/functions-audit.json || true
+          node -e "for (const f of ['/tmp/root-audit.json','/tmp/functions-audit.json']) { const j=require(f); console.log(f, JSON.stringify(j.metadata?.vulnerabilities || {})); for (const [name,v] of Object.entries(j.vulnerabilities || {})) console.log(name, v.severity, 'fixAvailable=', JSON.stringify(v.fixAvailable)); }"
+      - name: Enforce zero dependency vulnerabilities
+        run: |
+          npm audit --audit-level=low
+          npm audit --prefix functions --audit-level=low
+      - name: Compile Firestore rules in the Firebase emulator
+        run: npx --yes firebase-tools@latest emulators:exec --only firestore --project maru-ghar-gandhinagar-8dbe4 "echo Firestore rules compiled successfully"
+      - name: Commit non-breaking lockfile security updates to PR branch
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
+        run: |
+          git fetch origin "$BRANCH_NAME"
+          git reset --hard FETCH_HEAD
+          npm install --package-lock-only --ignore-scripts
+          npm install --prefix functions --package-lock-only --ignore-scripts
+          npm audit fix --package-lock-only --ignore-scripts || true
+          npm audit fix --prefix functions --package-lock-only --ignore-scripts || true
+          git add -f package-lock.json functions/package-lock.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Update dependency lockfiles after security fixes"
+            git push origin "HEAD:$BRANCH_NAME"
+          else
+            echo "No lockfile changes to commit."
+          fi
       - name: Package complete project source
         if: success()
         run: |

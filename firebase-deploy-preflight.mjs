@@ -32,7 +32,7 @@ for(const [needle,msg] of [
  ["exports.notifyPriceDrop",'Price-drop notification function missing'],
  ["exports.deleteMyAccount",'Account deletion callable function missing'],
  ["context.eventId",'Price-drop retry idempotency key missing'],
- ["admin.firestore().collection('adminTokens')",'Admin token lookup missing']
+ ["db.collection('adminTokens')",'Admin token lookup missing']
 ])if(!fn.includes(needle))errors.push(msg);
 if(errors.length){console.error('FIREBASE DEPLOY PREFLIGHT FAILED');errors.forEach(x=>console.error(' - '+x));process.exit(1)}
 console.log(`FIREBASE DEPLOY PREFLIGHT PASS — target ${project}; Firestore rules/index paths, Node ${fnPkg.engines.node} Functions source, admin/customer privacy guards and required callable/trigger functions found.`);

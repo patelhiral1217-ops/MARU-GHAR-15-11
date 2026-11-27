@@ -1,8 +1,12 @@
 // Sends a push notification to the admin phone whenever a new listing is submitted for approval.
 const functions = require('firebase-functions/v1');
-const admin = require('firebase-admin');
+const { initializeApp } = require('firebase-admin/app');
+const { getFirestore, FieldValue } = require('firebase-admin/firestore');
+const { getMessaging } = require('firebase-admin/messaging');
+const { getAuth } = require('firebase-admin/auth');
 const crypto = require('crypto');
-admin.initializeApp();
+initializeApp();
+const db = getFirestore();
 
 const ADMIN_UID = 'yJYiuaUE3KXVLVuWqLyLRH5owQJ3';
 const DEAD_TOKEN_CODES = ['messaging/registration-token-not-registered', 'messaging/invalid-registration-token'];
@@ -14,11 +18,11 @@ exports.notifyAdminNewListing = functions.firestore
     if (d.status !== 'pending') return null;           // only listings waiting for approval
     if (d.submitterUid === ADMIN_UID) return null;     // admin's own entries need no alert
 
-    const tokenDocs = (await admin.firestore().collection('adminTokens').get()).docs;
+    const tokenDocs = (await db.collection('adminTokens').get()).docs;
     if (!tokenDocs.length) { console.log('No admin device registered yet.'); return null; }
 
     const body = [d.type, d.purpose, d.location].filter(Boolean).join(' · ') || 'નવી પ્રોપર્ટી મંજૂરી માટે આવી છે';
-    const res = await admin.messaging().sendEachForMulticast({
+    const res = await getMessaging().sendEachForMulticast({
       tokens: tokenDocs.map((t) => t.id),
       notification: { title: 'મારું ઘર — નવી લિસ્ટિંગ મંજૂરી માટે', body },
       android: { priority: 'high', notification: { sound: 'default' } },
@@ -43,10 +47,10 @@ exports.notifyPriceDrop = functions.firestore
     const newPrice = Number(after.priceNum || 0);
     if (!oldPrice || !newPrice || newPrice >= oldPrice || after.status !== 'approved') return null;
     const listingId = context.params.listingId;
-    const saved = await admin.firestore().collectionGroup('favorites')
+    const saved = await db.collectionGroup('favorites')
       .where('listingId', '==', listingId).get();
     if (saved.empty) return null;
-    const db = admin.firestore();
+    
     const amount = oldPrice - newPrice;
     // Firestore batches are limited to 500 writes. Chunk at 400 so a large
     // customer wishlist cannot make the entire price update trigger fail.
@@ -65,7 +69,7 @@ exports.notifyPriceDrop = functions.firestore
           type: 'price_drop', listingId,
           message: `મનપસંદ પ્રોપર્ટીનો ભાવ ઘટ્યો: ${before.price || oldPrice} → ${after.price || newPrice} (₹${amount.toLocaleString('en-IN')} ઓછો).`,
           oldPrice, newPrice, eventId: context.eventId,
-          createdAt: admin.firestore.FieldValue.serverTimestamp(), read: false
+          createdAt: FieldValue.serverTimestamp(), read: false
         }, { merge: false });
         queued++;
       });
@@ -83,7 +87,7 @@ exports.deleteMyAccount = functions.https.onCall(async (_data, context) => {
   }
   const uid = context.auth.uid;
   if (uid === ADMIN_UID) throw new functions.https.HttpsError('failed-precondition', 'એડમિન એકાઉન્ટ આ વિકલ્પથી ડિલીટ કરી શકાતું નથી.');
-  const db = admin.firestore();
+  
   const userRef = db.collection('users').doc(uid);
   // Remove customer-owned subcollections and enquiry documents before Auth user.
   await db.recursiveDelete(userRef);
@@ -93,7 +97,7 @@ exports.deleteMyAccount = functions.https.onCall(async (_data, context) => {
     enquiries.docs.slice(i, i + 400).forEach(d => batch.delete(d.ref));
     await batch.commit();
   }
-  await admin.auth().deleteUser(uid);
+  await getAuth().deleteUser(uid);
   return { ok: true };
 });
 

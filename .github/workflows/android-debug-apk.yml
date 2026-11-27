@@ -2,6 +2,8 @@ name: Maru Ghar Android Debug APK
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -16,7 +18,17 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '21'
+      - name: Install Android 16 SDK platform and build tools
+        run: |
+          SDK_ROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          SDKMANAGER="$(find "$SDK_ROOT" -type f -name sdkmanager -perm -u+x -print -quit)"
+          if [ -z "$SDKMANAGER" ]; then
+            echo "Android SDK manager not found under $SDK_ROOT"
+            exit 1
+          fi
+          yes | "$SDKMANAGER" --licenses || true
+          "$SDKMANAGER" --install "platforms;android-36" "build-tools;36.0.0"
       - name: Install project dependencies
         run: npm install --ignore-scripts
       - name: Build web assets
