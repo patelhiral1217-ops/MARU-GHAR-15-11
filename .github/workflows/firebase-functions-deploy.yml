@@ -1,0 +1,39 @@
+name: Maru Ghar Firebase Functions and Rules Deploy
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'functions/**'
+      - 'firestore.rules'
+      - 'firebase.json'
+      - '.github/workflows/firebase-functions-deploy.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  deploy-functions-rules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Functions dependencies
+        run: npm install --prefix functions --omit=dev
+      - name: Prepare Firebase service account
+        shell: bash
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "FIREBASE_SERVICE_ACCOUNT repository secret is missing."
+            exit 1
+          fi
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
+          chmod 600 "$RUNNER_TEMP/firebase-service-account.json"
+      - name: Deploy Firestore rules and Cloud Functions
+        uses: w9jds/firebase-action@v13.29.0
+        with:
+          args: deploy --only firestore:rules,functions --project maru-ghar-gandhinagar-8dbe4
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebase-service-account.json
