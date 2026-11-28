@@ -10,6 +10,7 @@ const publicFiles = [
   'index.html',
   'admin.html',
   'privacy.html',
+  'account-deletion.html',
   'download.html',
   'firebase-config.js',
   'manifest.webmanifest',
@@ -52,6 +53,7 @@ if (fs.existsSync(assets)) {
 for (const required of [
   'index.html',
   'admin.html',
+  'account-deletion.html',
   'firebase-config.js',
   'maru-ghar-backend.js',
   'maru-ghar-extras.js',

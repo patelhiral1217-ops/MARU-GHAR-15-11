@@ -54,6 +54,20 @@ jobs:
           fi
           printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
           chmod 600 "$RUNNER_TEMP/firebase-service-account.json"
+      - name: Configure Cloudinary cleanup credentials when available
+        shell: bash
+        env:
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+        run: |
+          if [ -n "$CLOUDINARY_API_KEY" ] && [ -n "$CLOUDINARY_API_SECRET" ]; then
+            umask 077
+            printf 'CLOUDINARY_API_KEY=%s\\nCLOUDINARY_API_SECRET=%s\\n' "$CLOUDINARY_API_KEY" "$CLOUDINARY_API_SECRET" > functions/.env
+            chmod 600 functions/.env
+            echo "Cloudinary cleanup credentials prepared for this deployment."
+          else
+            echo "::warning::Cloudinary cleanup secrets are not configured; admin media deletion will safely stop instead of silently orphaning files."
+          fi
       - name: Deploy Cloud Functions (requires Firebase Blaze plan)
         uses: w9jds/firebase-action@v13.29.0
         with:

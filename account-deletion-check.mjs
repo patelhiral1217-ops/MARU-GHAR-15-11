@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const page=fs.readFileSync('account-deletion.html','utf8');
+const copy=fs.readFileSync('copy-web.mjs','utf8');
+const preflight=fs.readFileSync('hosting-preflight.mjs','utf8');
+const privacy=fs.readFileSync('privacy.html','utf8');
+for(const language of ['gu','hi','en'])assert.ok(page.includes('data-'+language+'='),'Account deletion page must include '+language+' copy');
+assert.match(page,/wa\.me\/916357030198/,'External account deletion request path must be available');
+assert.match(page,/Delete My Account/,'In-app account deletion route must be explained');
+assert.match(page,/not automatically removed by account deletion/,'Separate property listing/media handling must be disclosed');
+assert.match(copy,/account-deletion\.html/,'Hosting build must copy the account deletion page');
+assert.match(preflight,/account-deletion\.html/,'Hosting preflight must require the account deletion page');
+assert.match(privacy,/href="account-deletion\.html"/,'Privacy policy must link to account deletion page');
+console.log('ACCOUNT DELETION PAGE PASS — public Gujarati/Hindi/English instructions, in-app route, external request link, and Hosting inclusion.');

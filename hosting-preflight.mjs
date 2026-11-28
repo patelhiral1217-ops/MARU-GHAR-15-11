@@ -3,7 +3,7 @@ import path from 'node:path';
 
 const root = process.cwd();
 const web = path.join(root, 'www');
-const pages = ['index.html', 'admin.html', 'privacy.html', 'download.html'];
+const pages = ['index.html', 'admin.html', 'privacy.html', 'account-deletion.html', 'download.html'];
 const errors = [];
 
 for (const page of pages) {
